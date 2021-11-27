@@ -28,12 +28,21 @@ import java.awt.geom.Rectangle2D;
 
 public class HomeMenu extends JComponent implements MouseListener, MouseMotionListener {
 
+    //CONSTANTS:
+    //-Text for Greetings, Game Title, Credit, Start button, Exit button
     private static final String GREETINGS = "Welcome to:";
     private static final String GAME_TITLE = "Brick Destroy";
     private static final String CREDITS = "Version 0.1";
     private static final String START_TEXT = "Start";
     private static final String MENU_TEXT = "Exit";
 
+    //CONSTANTS:
+    //-Background color is darker green
+    //-Border color is red
+    //-Border small pattern color is yellow
+    //-The text color is blue
+    //-Clicked button color is light green
+    //-Clicked button text color is white
     private static final Color BG_COLOR = Color.GREEN.darker();
     private static final Color BORDER_COLOR = new Color(200,8,21); //Venetian Red
     private static final Color DASH_BORDER_COLOR = new  Color(255, 216, 0);//school bus yellow
@@ -43,19 +52,22 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
     private static final int BORDER_SIZE = 5;
     private static final float[] DASHES = {12,6};
 
+    //menuFace, startButton, exitButton
     private Rectangle menuFace;
     private Rectangle startButton;
     private Rectangle menuButton;
 
-
+    //BasicStroke defines the rendering attributes for Graphics2D objects
     private BasicStroke borderStoke;
     private BasicStroke borderStoke_noDashes;
 
+    //Font for greetings, gameTitle, credits, button text
     private Font greetingsFont;
     private Font gameTitleFont;
     private Font creditsFont;
     private Font buttonFont;
 
+    //GameFrame is the owner
     private GameFrame owner;
 
     private boolean startClicked;
@@ -63,37 +75,37 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
 
 
     public HomeMenu(GameFrame owner,Dimension area){
-
+        //so that the HomeMenu is being focused
         this.setFocusable(true);
         this.requestFocusInWindow();
-
+        //so that HomeMenu listens to mouse actions
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
-
+        //GameFrame as the owner
         this.owner = owner;
-
-
-
+        //set size of HomeMenu as specified by dimension area
         menuFace = new Rectangle(new Point(0,0),area);
         this.setPreferredSize(area);
-
+        //set size of buttons based on the dimension area
         Dimension btnDim = new Dimension(area.width / 3, area.height / 12);
         startButton = new Rectangle(btnDim);
         menuButton = new Rectangle(btnDim);
-
+        //set the stroke size
         borderStoke = new BasicStroke(BORDER_SIZE,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND,0,DASHES,0);
         borderStoke_noDashes = new BasicStroke(BORDER_SIZE,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
 
+        //set font size and font style for texts on HomeMenu
         greetingsFont = new Font("Noto Mono",Font.PLAIN,25);
         gameTitleFont = new Font("Noto Mono",Font.BOLD,40);
         creditsFont = new Font("Monospaced",Font.PLAIN,10);
         buttonFont = new Font("Monospaced",Font.PLAIN,startButton.height-2);
-
-
-
     }
 
 
+    //this is a built in paint method, so paint() doesn't have to be called explicitly,
+    //it will be called automatically everytime constructor for HomeMenu is called
+    //paint method draws all component in HomeMenu
+    //paint -> drawMenu -> drawContainer -> drawText -> drawButton
     public void paint(Graphics g){
         drawMenu((Graphics2D)g);
     }
@@ -108,12 +120,13 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
         painting directly into the HomeMenu rectangle,
         so the translation is made here so the other methods do not do that.
          */
+        //to store the default color and font in previousColor,Font
         Color prevColor = g2d.getColor();
         Font prevFont = g2d.getFont();
 
         double x = menuFace.getX();
         double y = menuFace.getY();
-
+        //to set the reference point in the top left corner of menuFace
         g2d.translate(x,y);
 
         //methods calls
@@ -129,15 +142,17 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
     private void drawContainer(Graphics2D g2d){
         Color prev = g2d.getColor();
 
+        //set and fill up background with Dark Green color
         g2d.setColor(BG_COLOR);
         g2d.fill(menuFace);
 
         Stroke tmp = g2d.getStroke();
 
+        //draw the red color border
         g2d.setStroke(borderStoke_noDashes);
         g2d.setColor(DASH_BORDER_COLOR);
         g2d.draw(menuFace);
-
+        //draw the yellow color border small pattern
         g2d.setStroke(borderStoke);
         g2d.setColor(BORDER_COLOR);
         g2d.draw(menuFace);
@@ -149,60 +164,65 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
 
     private void drawText(Graphics2D g2d){
 
+        //set the color of text
         g2d.setColor(TEXT_COLOR);
 
         FontRenderContext frc = g2d.getFontRenderContext();
 
+        //get the bounding rectangle for the text of greetings, gameTitle, credits
         Rectangle2D greetingsRect = greetingsFont.getStringBounds(GREETINGS,frc);
         Rectangle2D gameTitleRect = gameTitleFont.getStringBounds(GAME_TITLE,frc);
         Rectangle2D creditsRect = creditsFont.getStringBounds(CREDITS,frc);
 
         int sX,sY;
-
+        //order of the text in HomeMenu goes like this:
+        //(1)greetings
+        //(2)gameTitle
+        //(3)credits
+        //set location for greetings and draw the text
         sX = (int)(menuFace.getWidth() - greetingsRect.getWidth()) / 2;
         sY = (int)(menuFace.getHeight() / 4);
-
         g2d.setFont(greetingsFont);
         g2d.drawString(GREETINGS,sX,sY);
 
+        //set location for gameTitle(which is below greetings) and draw the text
         sX = (int)(menuFace.getWidth() - gameTitleRect.getWidth()) / 2;
         sY += (int) gameTitleRect.getHeight() * 1.1;//add 10% of String height between the two strings
-
         g2d.setFont(gameTitleFont);
         g2d.drawString(GAME_TITLE,sX,sY);
 
+        //set location for credits(which is below gameTitle) and draw the text
         sX = (int)(menuFace.getWidth() - creditsRect.getWidth()) / 2;
         sY += (int) creditsRect.getHeight() * 1.1;
-
         g2d.setFont(creditsFont);
         g2d.drawString(CREDITS,sX,sY);
-
-
     }
 
     private void drawButton(Graphics2D g2d){
 
         FontRenderContext frc = g2d.getFontRenderContext();
 
+        //get the bounding rectangle for the buttons text
         Rectangle2D txtRect = buttonFont.getStringBounds(START_TEXT,frc);
         Rectangle2D mTxtRect = buttonFont.getStringBounds(MENU_TEXT,frc);
-
+        //set the font for button text
         g2d.setFont(buttonFont);
 
+        //set the location for start button
         int x = (menuFace.width - startButton.width) / 2;
         int y =(int) ((menuFace.height - startButton.height) * 0.8);
-
         startButton.setLocation(x,y);
 
+        //set the location for Start text inside start button
         x = (int)(startButton.getWidth() - txtRect.getWidth()) / 2;
         y = (int)(startButton.getHeight() - txtRect.getHeight()) / 2;
-
         x += startButton.x;
         y += startButton.y + (startButton.height * 0.9);
 
-
-
-
+        //if startButton is clicked
+        //this set the color of button to light green, and draw it out
+        //also set color of Start text to white, and draw it out
+        //else, just draw the button normally
         if(startClicked){
             Color tmp = g2d.getColor();
             g2d.setColor(CLICKED_BUTTON_COLOR);
@@ -216,25 +236,25 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
             g2d.drawString(START_TEXT,x,y);
         }
 
+        //x coordinate of startButton and menuButton remains same
+        //but y coordinate of menuButton is pushed downwards from y coor of startButton
         x = startButton.x;
         y = startButton.y;
-
         y *= 1.2;
-
         menuButton.setLocation(x,y);
 
-
-
-
+        //set the location for Exit text inside start button
         x = (int)(menuButton.getWidth() - mTxtRect.getWidth()) / 2;
         y = (int)(menuButton.getHeight() - mTxtRect.getHeight()) / 2;
-
         x += menuButton.x;
         y += menuButton.y + (startButton.height * 0.9);
 
+        //if menuButton is clicked
+        //this set the color of button to light green, and draw it out
+        //also set color of Start text to white, and draw it out
+        //else, just draw the button normally
         if(menuClicked){
             Color tmp = g2d.getColor();
-
             g2d.setColor(CLICKED_BUTTON_COLOR);
             g2d.draw(menuButton);
             g2d.setColor(CLICKED_TEXT);
@@ -245,9 +265,10 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
             g2d.draw(menuButton);
             g2d.drawString(MENU_TEXT,x,y);
         }
-
     }
 
+    //if startButton is clicked(pressed & released) then gameBoard is initialized
+    //if menuButton is clicked(pressed & released) then quit program, and "Goodbye user" is printed
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint();
@@ -261,6 +282,7 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
         }
     }
 
+    //if either buttons are pressed, then set (start/menu)Clicked to true, then repaint the button to new color
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint();
@@ -275,9 +297,11 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
         }
     }
 
+    //if either button are pressed, and then released outside the button,
+    //then set (start/menu)Clicked to false, then repaint the buttons to normal color
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
-        if(startClicked ){
+        if(startClicked){
             startClicked = false;
             repaint(startButton.x,startButton.y,startButton.width+1,startButton.height+1);
         }
@@ -303,6 +327,7 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
 
     }
 
+    //when mouse hover the buttons. mouse cursor will turn into hand cursor
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint();

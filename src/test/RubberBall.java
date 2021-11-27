@@ -23,23 +23,39 @@ import java.awt.geom.Point2D;
 
 public class RubberBall extends Ball {
 
-
+    //CONSTANTS:
+    //- radius
+    //- inner color
+    //- border color
+    //radius of rubber ball is 10
     private static final int DEF_RADIUS = 10;
+    //the inner color of rubber ball is yellow
     private static final Color DEF_INNER_COLOR = new Color(255, 219, 88);
+    //the border color of rubber ball is darker.darker of yellow
     private static final Color DEF_BORDER_COLOR = DEF_INNER_COLOR.darker().darker();
 
-
+    //constructor of RubberBall where it passes the radius, inner color, border color to the constructor of superclass - ball
     public RubberBall(Point2D center){
         super(center,DEF_RADIUS,DEF_RADIUS,DEF_INNER_COLOR,DEF_BORDER_COLOR);
     }
 
 
+    //Overriden method makeBall
+    //construct an Ellipse2D ball based on radiusA,B
     @Override
     protected Shape makeBall(Point2D center, int radiusA, int radiusB) {
 
+        //x is set to the left of the center by half the horizontal radius
         double x = center.getX() - (radiusA / 2);
+        //y is set to the upper of the center by half the vertical radius
         double y = center.getY() - (radiusB / 2);
 
+        //construct an ellipse that is defined by a framing rectangle
+        //Ellipse2D.Double defines ellipse specified in Double precision
+        //x - X coordinate upper left corner of the framing rectangle
+        //y - Y coordinate upper left corner of the framing rectangle
+        //radius A - width of framing rectangle
+        //radius B - height of framing rectangle
         return new Ellipse2D.Double(x,y,radiusA,radiusB);
     }
 }

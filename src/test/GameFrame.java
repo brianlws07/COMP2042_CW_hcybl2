@@ -29,30 +29,30 @@ public class GameFrame extends JFrame implements WindowFocusListener {
 
     private static final String DEF_TITLE = "Brick Destroy";
 
+    //Class gameBoard, homeMenu constructor
     private GameBoard gameBoard;
     private HomeMenu homeMenu;
 
     private boolean gaming;
 
     public GameFrame(){
+        //JFrame constructor that constructs a frame that is initially invisible
         super();
 
         gaming = false;
-
+        //this set GameFrame to default border layout
         this.setLayout(new BorderLayout());
-
+        //construct gameBoard and homeMenu
         gameBoard = new GameBoard(this);
-
         homeMenu = new HomeMenu(this,new Dimension(450,300));
-
+        //so that homeMenu appears at center
         this.add(homeMenu,BorderLayout.CENTER);
-
+        //so that homeMenu won't be decorated (which means it won't be windowed)
         this.setUndecorated(true);
-
-
     }
 
     public void initialize(){
+        //this set the title and visible of the frame to true
         this.setTitle(DEF_TITLE);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.pack();
@@ -60,25 +60,30 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         this.setVisible(true);
     }
 
+    //this method will be invoked if start button is clicked in HomeMenu
     public void enableGameBoard(){
+        //removes the HomeMenu
         this.dispose();
         this.remove(homeMenu);
+        //this adds the gameBoard into the gameFrame
         this.add(gameBoard,BorderLayout.CENTER);
+        //frame is now decorated, so the frame is now windowed
         this.setUndecorated(false);
         initialize();
         /*to avoid problems with graphics focus controller is added here*/
         this.addWindowFocusListener(this);
-
     }
 
+    //this set the location of gameFrame in relative to the monitor size
     private void autoLocate(){
+        //this get the screenSize of monitor
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (size.width - this.getWidth()) / 2;
         int y = (size.height - this.getHeight()) / 2;
         this.setLocation(x,y);
     }
 
-
+    //if gameFrame is in use, then set gaming to true
     @Override
     public void windowGainedFocus(WindowEvent windowEvent) {
         /*
@@ -92,10 +97,11 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         gaming = true;
     }
 
+    //if gameFrame is not in use but gaming is still True,
+    //stop timer and output message "Focus Lost" on screen
     @Override
     public void windowLostFocus(WindowEvent windowEvent) {
         if(gaming)
             gameBoard.onLostFocus();
-
     }
 }
