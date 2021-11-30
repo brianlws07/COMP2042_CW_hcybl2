@@ -15,7 +15,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package test;
+package ball;
+
+import ball.Ball;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -24,30 +26,26 @@ import java.awt.geom.Point2D;
 public class RubberBall extends Ball {
 
     //CONSTANTS:
-    //- radius
-    //- inner color
-    //- border color
-    //radius of rubber ball is 10
+    //radius of rubber ball = 10
+    //inner color of rubber ball = yellow
+    //border color of rubber ball = darker.darker(yellow)
     private static final int DEF_RADIUS = 10;
-    //the inner color of rubber ball is yellow
     private static final Color DEF_INNER_COLOR = new Color(255, 219, 88);
-    //the border color of rubber ball is darker.darker of yellow
     private static final Color DEF_BORDER_COLOR = DEF_INNER_COLOR.darker().darker();
 
-    //constructor of RubberBall where it passes the radius, inner color, border color to the constructor of superclass - ball
+    //set center coordinate, radius, color in superclass
     public RubberBall(Point2D center){
         super(center,DEF_RADIUS,DEF_RADIUS,DEF_INNER_COLOR,DEF_BORDER_COLOR);
     }
 
 
     //Overriden method makeBall
-    //construct an Ellipse2D ball based on radiusA,B
+    //construct an Ellipse2D shape ball
     @Override
     protected Shape makeBall(Point2D center, int radiusA, int radiusB) {
 
-        //x is set to the left of the center by half the horizontal radius
+        //x, y is set to upper left corner of ball
         double x = center.getX() - (radiusA / 2);
-        //y is set to the upper of the center by half the vertical radius
         double y = center.getY() - (radiusB / 2);
 
         //construct an ellipse that is defined by a framing rectangle

@@ -1,4 +1,6 @@
-package test;
+package brickWall;
+
+import ball.Ball;
 
 import java.awt.*;
 import java.awt.Point;
@@ -9,28 +11,21 @@ import java.util.Random;
 abstract public class Brick  {
 
     //CONSTANTS:
-    //- minimum no. of crack
-    //- depth of crack
-    //- steps
-    public static final int MIN_CRACK = 1;
+    public static final int MIN_CRACK = 1;//(not used)
     public static final int DEF_CRACK_DEPTH = 1;
     public static final int DEF_STEPS = 35;
 
-    //CONSTANTS:
-    //- impact of up, down, left, right
+    //switch case condition for brick impact
     public static final int UP_IMPACT = 100;
     public static final int DOWN_IMPACT = 200;
     public static final int LEFT_IMPACT = 300;
     public static final int RIGHT_IMPACT = 400;
-
 
     //inner class Crack
     //*** separate inner class Crack from outer class Brick when refactoring
     public class Crack{
 
         //CONSTANTS:
-        //- crack sections
-        //- jump probability
         private static final int CRACK_SECTIONS = 3;
         private static final double JUMP_PROBABILITY = 0.7;
         //- left, right, up, down, vertical, horizontal
@@ -300,19 +295,19 @@ abstract public class Brick  {
         int out  = 0;
         //if ball.right is in the boundary of brickFace
         //set out to LEFT_IMPACT
-        if(brickFace.contains(b.right))
+        if(brickFace.contains(b.getRight()))
             out = LEFT_IMPACT;
         //if ball.left is in the boundary of brickFace
         //set out to RIGHT_IMPACT
-        else if(brickFace.contains(b.left))
+        else if(brickFace.contains(b.getLeft()))
             out = RIGHT_IMPACT;
         //if ball.up is in the boundary of brickFace
         //set out to DOWN_IMPACT
-        else if(brickFace.contains(b.up))
+        else if(brickFace.contains(b.getUp()))
             out = DOWN_IMPACT;
         //if ball.down is in the boundary of brickFace
         //set out to UP_IMPACT
-        else if(brickFace.contains(b.down))
+        else if(brickFace.contains(b.getDown()))
             out = UP_IMPACT;
         //return out
         return out;

@@ -15,7 +15,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package test;
+package debug;
+
+import ball.Ball;
+import brickWall.Wall;
+import gameMain.GameBoard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -102,7 +106,7 @@ public class DebugConsole extends JDialog implements WindowListener{
     public void windowActivated(WindowEvent windowEvent) {
         //so that debugConsole is in the middle when opened
         setLocation();
-        Ball b = wall.ball;
+        Ball b = wall.getBall();
         //the knob of slider is automatically set to the value of the ball
         debugPanel.setValues(b.getSpeedX(),b.getSpeedY());
     }

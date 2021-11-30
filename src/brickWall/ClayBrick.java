@@ -1,8 +1,9 @@
-package test;
+package brickWall;
+
+import brickWall.Brick;
 
 import java.awt.*;
 import java.awt.Point;
-import java.awt.geom.Point2D;
 
 public class ClayBrick extends Brick {
 

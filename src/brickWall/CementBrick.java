@@ -1,4 +1,6 @@
-package test;
+package brickWall;
+
+import brickWall.Brick;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
