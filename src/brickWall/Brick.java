@@ -21,14 +21,112 @@ abstract public class Brick  {
     public static final int LEFT_IMPACT = 300;
     public static final int RIGHT_IMPACT = 400;
 
-    //inner class Crack
-    //*** separate inner class Crack from outer class Brick when refactoring
+
+    private static Random rnd;
+
+    private String name;// name is assigned but never accessed
+    Shape brickFace;
+
+    private Color border;
+    private Color inner;
+
+    private int fullStrength;
+    private int strength;
+
+    private boolean broken;
+
+    //constructor of Brick class
+    public Brick(String name, Point pos,Dimension size,Color border,Color inner,int strength){
+        //initialize and set value for rnd, broken, name
+        rnd = new Random();
+        broken = false;
+        this.name = name;
+        //make Brick Face based on Point pos and Dimension size of subclass
+        brickFace = makeBrickFace(pos,size);
+        //set the values for border, inner, strength
+        this.border = border;
+        this.inner = inner;
+        this.fullStrength = this.strength = strength;
+    }
+
+    //protected abstract method makeBrickFace to be implemented by subclasses
+    //make Brick Face based on Point pos and Dimension size of subclass
+    protected abstract Shape makeBrickFace(Point pos,Dimension size);
+
+    //method setImpact return boolean
+    public  boolean setImpact(Point2D point , int dir){
+        //if broken is true, then return false
+        if(broken)
+            return false;
+        //impact() set broken to true if strength = 0
+        impact();
+        //return broken
+        return  broken;
+    }
+
+    //abstract method getBrick to be implemented by subclasses
+    public abstract Shape getBrick();
+
+    public Color getBorderColor(){
+        return  border;
+    }
+
+    public Color getInnerColor(){
+        return inner;
+    }
+
+
+    public final int findImpact(Ball b){
+        //if brick is broken, then return 0
+        if(broken)
+            return 0;
+        //initialize out to 0
+        int out  = 0;
+        //if ball.right is in the boundary of brickFace
+        //set out to LEFT_IMPACT
+        if(brickFace.contains(b.getRight()))
+            out = LEFT_IMPACT;
+            //if ball.left is in the boundary of brickFace
+            //set out to RIGHT_IMPACT
+        else if(brickFace.contains(b.getLeft()))
+            out = RIGHT_IMPACT;
+            //if ball.up is in the boundary of brickFace
+            //set out to DOWN_IMPACT
+        else if(brickFace.contains(b.getUp()))
+            out = DOWN_IMPACT;
+            //if ball.down is in the boundary of brickFace
+            //set out to UP_IMPACT
+        else if(brickFace.contains(b.getDown()))
+            out = UP_IMPACT;
+        //return out
+        return out;
+    }
+
+    public final boolean isBroken(){
+        return broken;
+    }
+
+    //method repair
+    public void repair() {
+        //set broken back to false
+        //set strength back to fullStrength
+        broken = false;
+        strength = fullStrength;
+    }
+
+    public void impact(){
+        //decrement strength
+        strength--;
+        //set broken to true if strength is 0, false if not
+        broken = (strength == 0);
+    }
+
     public class Crack{
 
         //CONSTANTS:
         private static final int CRACK_SECTIONS = 3;
         private static final double JUMP_PROBABILITY = 0.7;
-        //- left, right, up, down, vertical, horizontal
+        //switch case condition for wall impact and crack
         public static final int LEFT = 10;
         public static final int RIGHT = 20;
         public static final int UP = 30;
@@ -36,12 +134,10 @@ abstract public class Brick  {
         public static final int VERTICAL = 100;
         public static final int HORIZONTAL = 200;
 
-        //crack is variable of type GeneralPath
-        //GeneralPath represents geometric path constructed from straight lines or curves
+        //crack is a GeneralPath which represents geometric path constructed from straight lines or curves
         private GeneralPath crack;
-        //crackDepth, steps is variable of type int
-        private int crackDepth;
-        private int steps;
+        private int crackDepth;//1
+        private int steps;//35
 
         //constructor of class Crack
         //initialize and set value for crack, crackdepth, steps
@@ -51,14 +147,12 @@ abstract public class Brick  {
             this.steps = steps;
         }
 
-        //method draw
-        //returns crack of type GeneralPath
+        //returns crack path
         public GeneralPath draw(){
             return crack;
         }
 
-        //method reset
-        //reset the value for crack
+        //reset crack path to empty
         public void reset(){
             crack.reset();
         }
@@ -75,8 +169,6 @@ abstract public class Brick  {
             Point start = new Point();
             Point end = new Point();
 
-            //switch case based on direction
-            //*** try to separate switch cases to classes during refactoring
             switch(direction){
                 case LEFT:
                     //start is set to upper right corner of Rectangle bound
@@ -233,104 +325,6 @@ abstract public class Brick  {
 
     }
 
-    private static Random rnd;
-
-    private String name;
-    Shape brickFace;
-
-    private Color border;
-    private Color inner;
-
-    private int fullStrength;
-    private int strength;
-
-    private boolean broken;
-
-    //constructor of Brick class
-    public Brick(String name, Point pos,Dimension size,Color border,Color inner,int strength){
-        //initialize and set value for rnd, broken, name
-        rnd = new Random();
-        broken = false;
-        this.name = name;
-        //make Brick Face based on Point pos and Dimension size of subclass
-        brickFace = makeBrickFace(pos,size);
-        //set the values for border, inner, strength
-        this.border = border;
-        this.inner = inner;
-        this.fullStrength = this.strength = strength;
-    }
-
-    //protected abstract method makeBrickFace to be implemented by subclasses
-    //make Brick Face based on Point pos and Dimension size of subclass
-    protected abstract Shape makeBrickFace(Point pos,Dimension size);
-
-    //method setImpact return boolean
-    public  boolean setImpact(Point2D point , int dir){
-        //if broken is true, then return false
-        if(broken)
-            return false;
-        //impact() set broken to true if strength = 0
-        impact();
-        //return broken
-        return  broken;
-    }
-
-    //abstract method getBrick to be implemented by subclasses
-    public abstract Shape getBrick();
-
-    public Color getBorderColor(){
-        return  border;
-    }
-
-    public Color getInnerColor(){
-        return inner;
-    }
-
-
-    public final int findImpact(Ball b){
-        //if brick is broken, then return 0
-        if(broken)
-            return 0;
-        //initialize out to 0
-        int out  = 0;
-        //if ball.right is in the boundary of brickFace
-        //set out to LEFT_IMPACT
-        if(brickFace.contains(b.getRight()))
-            out = LEFT_IMPACT;
-        //if ball.left is in the boundary of brickFace
-        //set out to RIGHT_IMPACT
-        else if(brickFace.contains(b.getLeft()))
-            out = RIGHT_IMPACT;
-        //if ball.up is in the boundary of brickFace
-        //set out to DOWN_IMPACT
-        else if(brickFace.contains(b.getUp()))
-            out = DOWN_IMPACT;
-        //if ball.down is in the boundary of brickFace
-        //set out to UP_IMPACT
-        else if(brickFace.contains(b.getDown()))
-            out = UP_IMPACT;
-        //return out
-        return out;
-    }
-
-    public final boolean isBroken(){
-        return broken;
-    }
-
-    //method repair
-    public void repair() {
-        //set broken back to false
-        //set strength back to fullStrength
-        broken = false;
-        strength = fullStrength;
-    }
-
-    public void impact(){
-        //decrement strength
-        strength--;
-        //set broken to true if strength is 0, false if not
-        broken = (strength == 0);
-    }
 
 }
 

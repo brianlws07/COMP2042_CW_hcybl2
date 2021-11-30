@@ -137,35 +137,19 @@ abstract public class Ball {
         return speedY;
     }
 
-    public Point2D getUp() {
-        return up;
-    }
+    public Point2D getUp() {return up;}
 
-    public void setUp(Point2D up) {
-        this.up = up;
-    }
+    public void setUp(Point2D up) {this.up = up;}
 
-    public Point2D getDown() {
-        return down;
-    }
+    public Point2D getDown() {return down;}
 
-    public void setDown(Point2D down) {
-        this.down = down;
-    }
+    public void setDown(Point2D down) {this.down = down;}
 
-    public Point2D getLeft() {
-        return left;
-    }
+    public Point2D getLeft() {return left;}
 
-    public void setLeft(Point2D left) {
-        this.left = left;
-    }
+    public void setLeft(Point2D left) {this.left = left;}
 
-    public Point2D getRight() {
-        return right;
-    }
+    public Point2D getRight() {return right;}
 
-    public void setRight(Point2D right) {
-        this.right = right;
-    }
+    public void setRight(Point2D right) {this.right = right;}
 }

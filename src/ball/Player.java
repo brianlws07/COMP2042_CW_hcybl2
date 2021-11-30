@@ -91,6 +91,4 @@ public class Player {
     public Shape getPlayerFace(){
         return  playerFace;
     }
-
-
 }
