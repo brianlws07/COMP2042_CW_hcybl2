@@ -206,11 +206,14 @@ abstract public class Brick  {
                 //y = h * i from start.y + (random number between 0 and 1)
                 y = (i * h) + start.y + randomInBounds(bound); //bound is 1
 
-                
+                /*
                 //to check whether i is larger than low & lower than up
                 //y is set to y + random number based on jump
                 if(inMiddle(i,CRACK_SECTIONS,steps)) //CRACK_SECTIONS = 3, steps = 35
                     y += jumps(jump,JUMP_PROBABILITY); //jump = 5, jump probability = 0.7
+
+
+                 */
 
                 //connect path to new (x, y)
                 path.lineTo(x,y);
@@ -232,6 +235,7 @@ abstract public class Brick  {
             return rnd.nextInt(n) - bound;
         }
 
+        /*
         private boolean inMiddle(int i,int steps,int divisions){ //steps = 3, divisions = 35
             int low = (steps / divisions); // 3/35
             int up = low * (divisions - 1); // 102/35
@@ -246,6 +250,8 @@ abstract public class Brick  {
                 return randomInBounds(bound);
             return  0;
         }
+
+         */
 
         //private method makeRandomPoint
         //from - start, to - end, direction - HORIZONTAL, VERTICAL
