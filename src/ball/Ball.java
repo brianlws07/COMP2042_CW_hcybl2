@@ -34,14 +34,10 @@ abstract public class Ball {
         this.center = center;
 
         //initialize and set value for up, down, left, right coordinate of ball
-        up = new Point2D.Double();
-        down = new Point2D.Double();
-        left = new Point2D.Double();
-        right = new Point2D.Double();
-        up.setLocation(center.getX(),center.getY()-(radiusB / 2));
-        down.setLocation(center.getX(),center.getY()+(radiusB / 2));
-        left.setLocation(center.getX()-(radiusA /2),center.getY());
-        right.setLocation(center.getX()+(radiusA /2),center.getY());
+        up = new Point2D.Double(center.getX(),center.getY()-(radiusB / 2));
+        down = new Point2D.Double(center.getX(),center.getY()+(radiusB / 2));
+        left = new Point2D.Double(center.getX()-(radiusA /2),center.getY());
+        right = new Point2D.Double(center.getX()+(radiusA /2),center.getY());
 
         //return an ellipse ball
         ballFace = makeBall(center,radiusA,radiusB);
@@ -78,8 +74,8 @@ abstract public class Ball {
 
     //move the ballFace to point P
     public void moveTo(Point p){
-        center.setLocation(p);
         RectangularShape tmp = (RectangularShape) ballFace;
+        center.setLocation(p);
         double w = tmp.getWidth();
         double h = tmp.getHeight();
         tmp.setFrame((center.getX() -(w / 2)),(center.getY() - (h / 2)),w,h);

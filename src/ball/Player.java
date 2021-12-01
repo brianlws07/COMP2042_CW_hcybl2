@@ -46,7 +46,7 @@ public class Player {
     //construct a rectangle player bar
     public Player(Point ballPoint,int width,int height,Rectangle container) {
         this.ballPoint = ballPoint;
-        moveAmount = 0;
+        stop();
         playerFace = makeRectangle(width, height);
         //min, max is the range which player bar can move
         min = container.x + (width / 2);
