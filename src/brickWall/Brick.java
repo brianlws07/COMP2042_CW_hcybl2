@@ -11,7 +11,6 @@ import java.util.Random;
 abstract public class Brick  {
 
     //CONSTANTS:
-    public static final int MIN_CRACK = 1;//(not used)
     public static final int DEF_CRACK_DEPTH = 1;
     public static final int DEF_STEPS = 35;
 
@@ -186,10 +185,12 @@ abstract public class Brick  {
             GeneralPath path = new GeneralPath();
             path.moveTo(start.x,start.y);
 
-            //x distance from start to end divided by 35
+            double w = divideSteps(end.x, start.x);
+            double h = divideSteps(end.y, start.y);
+            /*//x distance from start to end divided by 35
             double w = (end.x - start.x) / (double)steps;
             //y distance from start to end divided by 35
-            double h = (end.y - start.y) / (double)steps;
+            double h = (end.y - start.y) / (double)steps;*/
 
             int bound = crackDepth; //1
             int jump  = bound * 5; //5
@@ -202,7 +203,6 @@ abstract public class Brick  {
                 x = (i * w) + start.x;
                 //y = h * i from start.y + (random number between 0 and 1)
                 y = (i * h) + start.y + randomInBounds(bound); //bound is 1
-
 
                 //to check whether i is larger than low & lower than up
                 //y is set to y + random number based on jump
@@ -219,6 +219,10 @@ abstract public class Brick  {
             crack.append(path,true);
         }
 
+        private double divideSteps(double a, double b){
+            return (a - b) / (double)steps;
+        }
+        
         //return a random number between 0 and 1
         private int randomInBounds(int bound){ //bound is 1
             int n = (bound * 2) + 1; //3
