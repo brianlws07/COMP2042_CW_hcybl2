@@ -10,7 +10,6 @@ import java.awt.geom.Point2D;
 public class CementBrick extends Brick {
 
     //CONSTANTS:
-    //- Name is Cement Brick
     //- Inner Color is Grey
     //- Border Color is Cream White
     //- Clay Strength is 2
@@ -24,18 +23,9 @@ public class CementBrick extends Brick {
 
     //constructor of class CementBrick
     public CementBrick(Point point, Dimension size){
-        //initialize and set value for variable is superclass Brick
         super(NAME,point,size,DEF_BORDER,DEF_INNER,CEMENT_STRENGTH);
-        //construct crack based on DEF_CRACK_DEPTH(1), DEF_STEPS(35)
-        crack = new Crack(DEF_CRACK_DEPTH,DEF_STEPS);
-        //set the brickFace to superclass(Brick).brickFace
+        crack = new Crack(DEF_CRACK_DEPTH,DEF_STEPS); //DEF_CRACK_DEPTH = 1, DEF_STEPS = 35
         brickFace = super.brickFace;
-    }
-
-    //return newly constructed Rectangle as BrickFace
-    @Override
-    protected Shape makeBrickFace(Point pos, Dimension size) {
-        return new Rectangle(pos,size);
     }
 
     @Override
@@ -55,31 +45,31 @@ public class CementBrick extends Brick {
         return true;
     }
 
-    @Override
-    public Shape getBrick() {
-        return brickFace;
-    }
-
-    //private method updateBrick
+    //update brick with crack
     private void updateBrick(){
         //if Brick is not broken
         if(!super.isBroken()){
-            //set gp to the crack of Brick
+            //draw crack on brick face
             GeneralPath gp = crack.draw();
-            //append the brickFace to the crack of Brick
             gp.append(super.brickFace,false);
-            //brickFace is set to crack of Brick
             brickFace = gp;
         }
     }
 
     public void repair(){
-        //set broken back to false
-        //set strength back to fullStrength
+        //restore bricks's(broken, strength)
         super.repair();
-        //reset the value for crack
+        //remove crack path in bricks
         crack.reset();
         //set brickFace to superclass(Brick).brickFace
         brickFace = super.brickFace;
     }
+
+    //overriden abstract method
+    @Override
+    protected Shape makeBrickFace(Point pos, Dimension size) {return new Rectangle(pos,size);}//return newly constructed Rectangle
+    @Override
+    public Shape getBrick() {
+        return brickFace;
+    }//return the brickFace of super class Brick
 }

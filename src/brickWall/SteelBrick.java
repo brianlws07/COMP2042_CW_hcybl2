@@ -27,11 +27,10 @@ import java.util.Random;
 public class SteelBrick extends Brick {
 
     //CONSTANTS:
-    //- Name is Steel Brick
-    //- Inner Color is Light Gray
-    //- Border Color is Black
-    //- Steel Strength is 1
-    //- Steel Probability is 0.4
+    //Inner Color = Light Gray
+    //Border Color = Black
+    //Brick Strength = 1
+    //Steel Probability = 0.4
     private static final String NAME = "Steel Brick";
     private static final Color DEF_INNER = new Color(203, 203, 201);
     private static final Color DEF_BORDER = Color.BLACK;
@@ -43,43 +42,35 @@ public class SteelBrick extends Brick {
 
     //constructor of class SteelBrick
     public SteelBrick(Point point, Dimension size){
-        //initialize and set value for variable is superclass Brick
         super(NAME,point,size,DEF_BORDER,DEF_INNER,STEEL_STRENGTH);
-        //initialize rnd (random number generator)
         rnd = new Random();
-        //set the brickFace to superclass(Brick).brickFace
         brickFace = super.brickFace;
     }
 
-    //return newly constructed Rectangle as BrickFace
-    @Override
-    protected Shape makeBrickFace(Point pos, Dimension size) {
-        return new Rectangle(pos,size);
-    }
-
-    @Override
-    public Shape getBrick() {
-        return brickFace;
-    }
-
-    public  boolean setImpact(Point2D point , int dir){
-        //if Brick is broken, then return false
-        if(super.isBroken())
-            return false;
-        //decrement strength
-        //set broken to true if strength is 0, false if not
-        impact();
-        //return boolean value of broken
-        return  super.isBroken();
-    }
-
     public void impact(){
-        //if the random generated double is less than steel probability
+        //if the random generated double is less 0.4
+        //then steel brick is broken
         if(rnd.nextDouble() < STEEL_PROBABILITY){
-            //decrement strength
-            //set broken to true if strength is 0, false if not
             super.impact();
         }
     }
+
+    public boolean setImpact(Point2D point , int dir){
+        //if Brick is broken, then return false
+        if(super.isBroken())
+            return false;
+        //decrement strength, and set value for broken based on strength
+        impact();
+        //return boolean value of broken
+        return super.isBroken();
+    }
+
+    //overriden abstract method
+    @Override
+    protected Shape makeBrickFace(Point pos, Dimension size) {return new Rectangle(pos,size);}//return newly constructed Rectangle
+    @Override
+    public Shape getBrick() {
+        return brickFace;
+    }//return the brickFace of super class Brick
 
 }

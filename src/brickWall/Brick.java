@@ -21,7 +21,6 @@ abstract public class Brick  {
     public static final int LEFT_IMPACT = 300;
     public static final int RIGHT_IMPACT = 400;
 
-
     private static Random rnd;
 
     private String name;// name is assigned but never accessed
@@ -37,34 +36,59 @@ abstract public class Brick  {
 
     //constructor of Brick class
     public Brick(String name, Point pos,Dimension size,Color border,Color inner,int strength){
-        //initialize and set value for rnd, broken, name
-        rnd = new Random();
+        rnd = new Random();//used in crack class
         broken = false;
         this.name = name;
-        //make Brick Face based on Point pos and Dimension size of subclass
-        brickFace = makeBrickFace(pos,size);
-        //set the values for border, inner, strength
-        this.border = border;
-        this.inner = inner;
-        this.fullStrength = this.strength = strength;
+        brickFace = makeBrickFace(pos,size);//construct rectangle Brick
+        this.border = border;//border color
+        this.inner = inner;//inner color
+        this.fullStrength = this.strength = strength;//used to repair brick to original strength
     }
 
-    //protected abstract method makeBrickFace to be implemented by subclasses
-    //make Brick Face based on Point pos and Dimension size of subclass
-    protected abstract Shape makeBrickFace(Point pos,Dimension size);
+    //impact brick will decrement brick strength, if strength is 0 then brick is broken(true)
+    public void impact(){
+        strength--;
+        broken = (strength == 0);
+    }
 
-    //method setImpact return boolean
-    public  boolean setImpact(Point2D point , int dir){
-        //if broken is true, then return false
+    //if brick is broken return True, else return False
+    public boolean setImpact(Point2D point , int dir){
         if(broken)
             return false;
-        //impact() set broken to true if strength = 0
         impact();
-        //return broken
         return  broken;
     }
 
-    //abstract method getBrick to be implemented by subclasses
+    //output is switch case condition for impact wall
+    public final int findImpact(Ball b){
+        //if brick is broken, then return 0
+        if(broken)
+            return 0;
+        int out  = 0;
+        //left side of brick is impacted by right side of ball
+        if(brickFace.contains(b.getRight()))
+            out = LEFT_IMPACT;
+        //right side of brick is impacted by left side of ball
+        else if(brickFace.contains(b.getLeft()))
+            out = RIGHT_IMPACT;
+        //down side of brick is impacted by up side of ball
+        else if(brickFace.contains(b.getUp()))
+            out = DOWN_IMPACT;
+        //up side of brick is impacted by down side of ball
+        else if(brickFace.contains(b.getDown()))
+            out = UP_IMPACT;
+        //return out
+        return out;
+    }
+
+    //restore bricks's(broken, strength)
+    public void repair() {
+        broken = false;
+        strength = fullStrength;
+    }
+
+    //abstract method (by subclass but same implementation):
+    protected abstract Shape makeBrickFace(Point pos,Dimension size);
     public abstract Shape getBrick();
 
     public Color getBorderColor(){
@@ -75,50 +99,8 @@ abstract public class Brick  {
         return inner;
     }
 
-
-    public final int findImpact(Ball b){
-        //if brick is broken, then return 0
-        if(broken)
-            return 0;
-        //initialize out to 0
-        int out  = 0;
-        //if ball.right is in the boundary of brickFace
-        //set out to LEFT_IMPACT
-        if(brickFace.contains(b.getRight()))
-            out = LEFT_IMPACT;
-            //if ball.left is in the boundary of brickFace
-            //set out to RIGHT_IMPACT
-        else if(brickFace.contains(b.getLeft()))
-            out = RIGHT_IMPACT;
-            //if ball.up is in the boundary of brickFace
-            //set out to DOWN_IMPACT
-        else if(brickFace.contains(b.getUp()))
-            out = DOWN_IMPACT;
-            //if ball.down is in the boundary of brickFace
-            //set out to UP_IMPACT
-        else if(brickFace.contains(b.getDown()))
-            out = UP_IMPACT;
-        //return out
-        return out;
-    }
-
     public final boolean isBroken(){
         return broken;
-    }
-
-    //method repair
-    public void repair() {
-        //set broken back to false
-        //set strength back to fullStrength
-        broken = false;
-        strength = fullStrength;
-    }
-
-    public void impact(){
-        //decrement strength
-        strength--;
-        //set broken to true if strength is 0, false if not
-        broken = (strength == 0);
     }
 
     public class Crack{
@@ -136,8 +118,8 @@ abstract public class Brick  {
 
         //crack is a GeneralPath which represents geometric path constructed from straight lines or curves
         private GeneralPath crack;
-        private int crackDepth;//1
-        private int steps;//35
+        private int crackDepth; //1
+        private int steps; //35
 
         //constructor of class Crack
         //initialize and set value for crack, crackdepth, steps
@@ -147,25 +129,12 @@ abstract public class Brick  {
             this.steps = steps;
         }
 
-        //returns crack path
-        public GeneralPath draw(){
-            return crack;
-        }
-
-        //reset crack path to empty
-        public void reset(){
-            crack.reset();
-        }
-
-        //protected method makeCrack (can only be accessed by subclass)
         protected void makeCrack(Point2D point, int direction){
-            //set the bounds to the bounds of brickFace
-            //getBounds returns Rectangle that completely encloses the shape of brickFace
+            //bounds is Rectangle that encloses the shape of brickFace
             Rectangle bounds = Brick.this.brickFace.getBounds();
 
-            //set coordinate of impact to point(x, y)
+            //impact point is where ball impacted the brick
             Point impact = new Point((int)point.getX(),(int)point.getY());
-            //initialize start and end as type Point
             Point start = new Point();
             Point end = new Point();
 
@@ -209,120 +178,96 @@ abstract public class Brick  {
             }
         }
 
-        //protected method makeCrack (can only be accessed by subclass)
         //this makeCrack is an Overloading method(same name, different parameter)
-        //start - impact
-        //end - tmp
+        //start - brick impact point with ball, end - (random) end point of crack
         protected void makeCrack(Point start, Point end){
 
-            //initialize path as type GeneralPath
+            //path starts from brick impact point(start)
             GeneralPath path = new GeneralPath();
-
-            //Adds a point to the path by moving to the coordinates of start
             path.moveTo(start.x,start.y);
 
-            //w is steps taken for the x distance from start to end
+            //x distance from start to end divided by 35
             double w = (end.x - start.x) / (double)steps;
-            //h is steps taken for the y distance from start to end
+            //y distance from start to end divided by 35
             double h = (end.y - start.y) / (double)steps;
 
-            //bound is set to value of crackDepth
-            int bound = crackDepth;
-            //jump is set to value of bound * 5
-            int jump  = bound * 5;
+            int bound = crackDepth; //1
+            int jump  = bound * 5; //5
 
             double x,y;
 
             for(int i = 1; i < steps;i++){
 
-                //x = (steps taken w) * i from start.x
+                //x = w * i from start.x
                 x = (i * w) + start.x;
-                //y = (steps taken h) * i from start.y + random bound number
-                y = (i * h) + start.y + randomInBounds(bound);
+                //y = h * i from start.y + (random number between 0 and 1)
+                y = (i * h) + start.y + randomInBounds(bound); //bound is 1
 
-                //CRACK_SECTIONS = 5
+
                 //to check whether i is larger than low & lower than up
                 //y is set to y + random number based on jump
-                if(inMiddle(i,CRACK_SECTIONS,steps))
-                    y += jumps(jump,JUMP_PROBABILITY);
+                if(inMiddle(i,CRACK_SECTIONS,steps)) //CRACK_SECTIONS = 3, steps = 35
+                    y += jumps(jump,JUMP_PROBABILITY); //jump = 5, jump probability = 0.7
 
-                //draw a line from original place to the (x, y) coordinates
+                //connect path to new (x, y)
                 path.lineTo(x,y);
 
             }
-
-            //draw a line from original place to the end(x, y) coordinates
+            //connect path to the end(x, y)
             path.lineTo(end.x,end.y);
-            //append the Shape to the path
+            //connect the new path to crack path
             crack.append(path,true);
         }
 
-        //private method randomInBounds
-        //return a random number based on bound
-        private int randomInBounds(int bound){
-            //bound of nextInt, n is set to (bound*2)+1
-            int n = (bound * 2) + 1;
-            //return random number from bound to bound*2(inclusive)
+        //return a random number between 0 and 1
+        private int randomInBounds(int bound){ //bound is 1
+            int n = (bound * 2) + 1; //3
             return rnd.nextInt(n) - bound;
         }
 
-        //private method inMiddle
-        //steps - CRACK_SECTIONS
-        //divisions - steps
-        //to check whether i is larger than low & lower than up
-        private boolean inMiddle(int i,int steps,int divisions){
-            //low is the steps taken for CRACK_SECTION
-            int low = (steps / divisions);
-            //up is low * (steps-1)
-            int up = low * (divisions - 1);
-            //return true if:
-            //(1) i is larger than low
-            //(2) i lower than up
+        private boolean inMiddle(int i,int steps,int divisions){ //steps = 3, divisions = 35
+            int low = (steps / divisions); // 3/35
+            int up = low * (divisions - 1); // 102/35
+            //check if i is between 3/35 and 102/35
             return  (i > low) && (i < up);
         }
 
-        //private method jumps
-        //bound - jump
-        //probability - JUMP_PROBABILITY
-        private int jumps(int bound,double probability){
-            //if generated double number is larger than probability
-            //return random number based on bound
+        private int jumps(int bound,double probability){//bound = 5, jump probability = 0.7
+            //if generated double number is larger than 0.7,
+            //then return random number between 0 and 5
             if(rnd.nextDouble() > probability)
                 return randomInBounds(bound);
             return  0;
-
         }
 
         //private method makeRandomPoint
-        //from - start
-        //to - end
-        //direction - HORIZONTAL, VERTICAL
-        //return random coordinate for tmp in makeCrack()
+        //from - start, to - end, direction - HORIZONTAL, VERTICAL
+        //return random coordinate as end point of crack
         private Point makeRandomPoint(Point from,Point to, int direction){
 
-            //initialize out of type Point
             Point out = new Point();
-            //position of type int
             int pos;
 
             switch(direction){
                 case HORIZONTAL:
-                    //position is set to a random location between start.x to end.x
+                    //return random coordinate along x-axis
                     pos = rnd.nextInt(to.x - from.x) + from.x;
-                    //out is set to random coordinate along x-axis
                     out.setLocation(pos,to.y);
                     break;
                 case VERTICAL:
-                    //position is set to a random location between start.y to end.y
+                    //return random coordinate along y-axis
                     pos = rnd.nextInt(to.y - from.y) + from.y;
-                    //out is set to random coordinate along y-axis
                     out.setLocation(to.x,pos);
                     break;
             }
-            //return out
             return out;
         }
 
+        //returns crack path
+        public GeneralPath draw(){return crack;}
+
+        //remove crack path in bricks
+        public void reset(){crack.reset();}
     }
 
 
