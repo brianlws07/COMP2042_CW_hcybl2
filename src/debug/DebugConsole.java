@@ -77,9 +77,7 @@ public class DebugConsole extends JDialog implements WindowListener{
 
 
     @Override
-    public void windowOpened(WindowEvent windowEvent) {
-
-    }
+    public void windowOpened(WindowEvent windowEvent) {}
 
     //when DebugConsole is closed, the whole gameBoard is reset again
     @Override
@@ -88,19 +86,13 @@ public class DebugConsole extends JDialog implements WindowListener{
     }
 
     @Override
-    public void windowClosed(WindowEvent windowEvent) {
-
-    }
+    public void windowClosed(WindowEvent windowEvent) {}
 
     @Override
-    public void windowIconified(WindowEvent windowEvent) {
-
-    }
+    public void windowIconified(WindowEvent windowEvent) {}
 
     @Override
-    public void windowDeiconified(WindowEvent windowEvent) {
-
-    }
+    public void windowDeiconified(WindowEvent windowEvent) {}
 
     @Override
     public void windowActivated(WindowEvent windowEvent) {
@@ -112,7 +104,5 @@ public class DebugConsole extends JDialog implements WindowListener{
     }
 
     @Override
-    public void windowDeactivated(WindowEvent windowEvent) {
-
-    }
+    public void windowDeactivated(WindowEvent windowEvent) {}
 }

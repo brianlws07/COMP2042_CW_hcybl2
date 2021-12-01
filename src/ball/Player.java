@@ -59,11 +59,6 @@ public class Player {
         return new Rectangle(p,new Dimension(width,height));
     }
 
-    //returns True if ball impacted player bar (down face of ball touches player bar)
-    public boolean impact(Ball b){
-        return playerFace.contains(b.getPosition()) && playerFace.contains(b.getDown()) ;
-    }
-
     //move player bar
     public void move(){
         //check if ball is within range of gameFrame
@@ -81,6 +76,9 @@ public class Player {
         ballPoint.setLocation(p);
         playerFace.setLocation(ballPoint.x - (int)playerFace.getWidth()/2,ballPoint.y);
     }
+
+    //returns True if ball impacted player bar (down face of ball touches player bar)
+    public boolean impact(Ball b){return playerFace.contains(b.getPosition()) && playerFace.contains(b.getDown()) ;}
 
     public void moveLeft(){moveAmount = -DEF_MOVE_AMOUNT;}//move player bar to left
     public void movRight(){moveAmount = DEF_MOVE_AMOUNT;}//move player bar to left

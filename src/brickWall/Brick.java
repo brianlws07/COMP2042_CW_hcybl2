@@ -20,8 +20,6 @@ abstract public class Brick  {
     public static final int LEFT_IMPACT = 300;
     public static final int RIGHT_IMPACT = 400;
 
-    private static Random rnd;
-
     private String name;// name is assigned but never accessed
     private Shape brickFace;
 
@@ -35,7 +33,7 @@ abstract public class Brick  {
 
     //constructor of Brick class
     public Brick(String name, Point pos,Dimension size,Color border,Color inner,int strength){
-        rnd = new Random();//used in crack class
+        //rnd = new Random();//used in crack class
         broken = false;
         this.name = name;
         brickFace = makeBrickFace(pos,size);//construct rectangle Brick
@@ -86,8 +84,8 @@ abstract public class Brick  {
         strength = fullStrength;
     }
 
-    //abstract method (by subclass but same implementation):
     protected Shape makeBrickFace(Point pos, Dimension size) {return new Rectangle(pos,size);}//return a constructed Rectangle
+    //abstract method (by subclass but same implementation):
     public abstract Shape getBrick();
 
     public Color getBorderColor(){
@@ -104,6 +102,7 @@ abstract public class Brick  {
 
     public Shape getBrickFace() {return brickFace;}
 
+    /*
     public class Crack{
 
         //CONSTANTS:
@@ -189,10 +188,10 @@ abstract public class Brick  {
 
             double w = divideSteps(end.x, start.x);
             double h = divideSteps(end.y, start.y);
-            /*//x distance from start to end divided by 35
-            double w = (end.x - start.x) / (double)steps;
+            //x distance from start to end divided by 35
+            //double w = (end.x - start.x) / (double)steps;
             //y distance from start to end divided by 35
-            double h = (end.y - start.y) / (double)steps;*/
+            //double h = (end.y - start.y) / (double)steps;
 
             int bound = crackDepth; //1
             int jump  = bound * 5; //5
@@ -206,14 +205,14 @@ abstract public class Brick  {
                 //y = h * i from start.y + (random number between 0 and 1)
                 y = (i * h) + start.y + randomInBounds(bound); //bound is 1
 
-                /*
+
                 //to check whether i is larger than low & lower than up
                 //y is set to y + random number based on jump
-                if(inMiddle(i,CRACK_SECTIONS,steps)) //CRACK_SECTIONS = 3, steps = 35
-                    y += jumps(jump,JUMP_PROBABILITY); //jump = 5, jump probability = 0.7
+                //if(inMiddle(i,CRACK_SECTIONS,steps)) //CRACK_SECTIONS = 3, steps = 35
+                    //y += jumps(jump,JUMP_PROBABILITY); //jump = 5, jump probability = 0.7
 
 
-                 */
+
 
                 //connect path to new (x, y)
                 path.lineTo(x,y);
@@ -235,23 +234,20 @@ abstract public class Brick  {
             return rnd.nextInt(n) - bound;
         }
 
-        /*
-        private boolean inMiddle(int i,int steps,int divisions){ //steps = 3, divisions = 35
-            int low = (steps / divisions); // 3/35
-            int up = low * (divisions - 1); // 102/35
-            //check if i is between 3/35 and 102/35
-            return  (i > low) && (i < up);
-        }
+        //private boolean inMiddle(int i,int steps,int divisions){ //steps = 3, divisions = 35
+        //    int low = (steps / divisions); // 3/35
+        //    int up = low * (divisions - 1); // 102/35
+        //    //check if i is between 3/35 and 102/35
+        //    return  (i > low) && (i < up);
+        //}
 
-        private int jumps(int bound,double probability){//bound = 5, jump probability = 0.7
-            //if generated double number is larger than 0.7,
-            //then return random number between 0 and 5
-            if(rnd.nextDouble() > probability)
-                return randomInBounds(bound);
-            return  0;
-        }
-
-         */
+        //private int jumps(int bound,double probability){//bound = 5, jump probability = 0.7
+        //    //if generated double number is larger than 0.7,
+        //    //then return random number between 0 and 5
+        //    if(rnd.nextDouble() > probability)
+        //        return randomInBounds(bound);
+        //    return  0;
+        //}
 
         //private method makeRandomPoint
         //from - start, to - end, direction - HORIZONTAL, VERTICAL
@@ -283,6 +279,8 @@ abstract public class Brick  {
         public void reset(){crack.reset();}
     }
 
+
+     */
 
 }
 

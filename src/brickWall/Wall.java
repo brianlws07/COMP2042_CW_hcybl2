@@ -27,69 +27,67 @@ import java.util.Random;
 
 public class Wall {
 
-    //CONSTANTS:-
-    //LEVELS_COUNT is 4
-    //CLAY is 1
-    //STEEL is 2
-    //CEMENT is 3
-    private static final int LEVELS_COUNT = 4;
+    //CONSTANTS:
+    private static final int LEVELS_COUNT = 4;// 4 levels
     private static final int CLAY = 1;
     private static final int STEEL = 2;
     private static final int CEMENT = 3;
 
-    //rnd of type rnd, area of type Rectangle
     private Random rnd;
     private Rectangle area;
 
-    //Array of Bricks, a ball, a player
     private Brick[] bricks;
     private Ball ball;
     private Player player;
+    //private Crack crack;
 
     //levels is 2D array of Brick, level is type int
     private Brick[][] levels;
     private int level;
 
-    //startPoint, brickCount, ballCount, ballLost
-    private Point  startPoint;
+    private Point startPoint;
     private int brickCount;
-    private int ballCount;
+    private int ballCount; //3
     private boolean ballLost;
 
     //constructor class Wall
     public Wall(Rectangle drawArea, int brickCount, int lineCount, double brickDimensionRatio, Point ballPos){
 
-        //initialize startPoint at ballPos
-        this.startPoint = new Point(ballPos);
+        this.startPoint = new Point(ballPos);//startPoint on (300, 430)
 
-        //makeLevels, and set level to 0
         levels = makeLevels(drawArea,brickCount,lineCount,brickDimensionRatio);
         level = 0;
 
-        //set to 3 balls, and ballLost to false first
         ballCount = 3;
         ballLost = false;
 
         rnd = new Random();
 
-        //construct a new RubberBall based on ballPos
-        makeBall(ballPos);
+        makeBall(ballPos);//construct a new RubberBall on (300, 430)
         int speedX,speedY;
-        do{
-            speedX = rnd.nextInt(5) - 2;//speedX is rnd between 0, 1, 2
+        do{speedX = rnd.nextInt(5) - 2;//speedX is rnd between 0, 1, 2
         }while(speedX == 0);
         do{
             speedY = -rnd.nextInt(3);//speedY is rnd between -2, -1 ,0 (negative because the ball move upwards)
         }while(speedY == 0);
-
         //set the speed of the ball to the new speedX, speedY
         ball.setSpeed(speedX,speedY);
 
-        //construct a new player (which is the green bar we are controlling)
         player = new Player((Point) ballPos.clone(),150,10, drawArea);
+        area = drawArea;//it is the whole area of JFrame not inclusive of the top bar
+    }
 
-        //it is the whole area of JFrame not inclusive of the top bar
-        area = drawArea;
+    private void makeBall(Point2D ballPos){ball = new RubberBall(ballPos);}//construct a new RubberBall
+
+    private Brick[][] makeLevels(Rectangle drawArea,int brickCount,int lineCount,double brickDimensionRatio){
+        //construct a tmp variable of type 2D array of Bricks, LEVELS_COUNT is 4
+        Brick[][] tmp = new Brick[LEVELS_COUNT][];
+        //it stores the object of bricks created in the inner array, and there are 31 objects for 31 bricks
+        tmp[0] = makeSingleTypeLevel(drawArea,brickCount,lineCount,brickDimensionRatio,CLAY);
+        tmp[1] = makeChessboardLevel(drawArea,brickCount,lineCount,brickDimensionRatio,CLAY,CEMENT);
+        tmp[2] = makeChessboardLevel(drawArea,brickCount,lineCount,brickDimensionRatio,CLAY,STEEL);
+        tmp[3] = makeChessboardLevel(drawArea,brickCount,lineCount,brickDimensionRatio,STEEL,CEMENT);
+        return tmp;
     }
 
     private Brick[] makeSingleTypeLevel(Rectangle drawArea, int brickCnt, int lineCnt, double brickSizeRatio, int type){
@@ -205,31 +203,6 @@ public class Wall {
         return tmp;
     }
 
-    //private method makeBall
-    //construct a new RubberBall
-    private void makeBall(Point2D ballPos){
-        ball = new RubberBall(ballPos);
-    }
-
-    private Brick[][] makeLevels(Rectangle drawArea,int brickCount,int lineCount,double brickDimensionRatio){
-        //construct a tmp variable of type 2D array of Bricks, LEVELS_COUNT is 4
-        Brick[][] tmp = new Brick[LEVELS_COUNT][];
-        //CLAY, CEMENT, STEEL are int CONSTANTS
-        //it stores the object of bricks created in the inner array, and there are 31 objects for 31 bricks
-        tmp[0] = makeSingleTypeLevel(drawArea,brickCount,lineCount,brickDimensionRatio,CLAY);
-        tmp[1] = makeChessboardLevel(drawArea,brickCount,lineCount,brickDimensionRatio,CLAY,CEMENT);
-        tmp[2] = makeChessboardLevel(drawArea,brickCount,lineCount,brickDimensionRatio,CLAY,STEEL);
-        tmp[3] = makeChessboardLevel(drawArea,brickCount,lineCount,brickDimensionRatio,STEEL,CEMENT);
-        return tmp;
-    }
-
-    //method move
-    //both player and ball move
-    public void move(){
-        player.move();
-        ball.move();
-    }
-
     public void findImpacts(){
         //if ball impacts player bar
         if(player.impact(ball)){
@@ -267,18 +240,18 @@ public class Wall {
                 //Vertical Impact
                 case Brick.UP_IMPACT:
                     ball.reverseY();
-                    return b.setImpact(ball.getDown(), Brick.Crack.UP);
+                    return b.setImpact(ball.getDown(), Crack.UP);
                 case Brick.DOWN_IMPACT:
                     ball.reverseY();
-                    return b.setImpact(ball.getUp(),Brick.Crack.DOWN);
+                    return b.setImpact(ball.getUp(), Crack.DOWN);
 
                 //Horizontal Impact
                 case Brick.LEFT_IMPACT:
                     ball.reverseX();
-                    return b.setImpact(ball.getRight(),Brick.Crack.RIGHT);
+                    return b.setImpact(ball.getRight(), Crack.RIGHT);
                 case Brick.RIGHT_IMPACT:
                     ball.reverseX();
-                    return b.setImpact(ball.getLeft(),Brick.Crack.LEFT);
+                    return b.setImpact(ball.getLeft(), Crack.LEFT);
             }
         }
         return false;
@@ -289,17 +262,6 @@ public class Wall {
         return ((p.getX() < area.getX()) ||(p.getX() > (area.getX() + area.getWidth())));
     }
 
-    public int getBrickCount(){
-        return brickCount;
-    }
-
-    public int getBallCount(){
-        return ballCount;
-    }
-
-    public boolean isBallLost(){
-        return ballLost;
-    }
 
     //it resets the position of player bar and ball
     //it then resets the direction of ball movement
@@ -328,36 +290,20 @@ public class Wall {
         ballCount = 3;
     }
 
-    public boolean ballEnd(){
-        return ballCount == 0;
-    }
-
-    public boolean isDone(){
-        return brickCount == 0;
-    }
-
     //it goes to the next level, and it also restores the brickCount back to 31
     public void nextLevel(){
         bricks = levels[level++];
         this.brickCount = bricks.length;
     }
 
-    //returns True if there is level remaining (4 levels in total)
-    public boolean hasLevel(){
-        return level < levels.length;
-    }
 
-    public void setBallXSpeed(int s){
-        ball.setXSpeed(s);
-    }
+    public boolean hasLevel(){return level < levels.length;} //returns True if there is level remaining (4 levels in total)
 
-    public void setBallYSpeed(int s){
-        ball.setYSpeed(s);
-    }
+    public void setBallXSpeed(int s){ball.setXSpeed(s);}
 
-    public void resetBallCount(){
-        ballCount = 3;
-    }
+    public void setBallYSpeed(int s){ball.setYSpeed(s);}
+
+    public void resetBallCount(){ballCount = 3;}
 
     //method makeBrick
     //creates a brick object based on type at the exact location point
@@ -379,27 +325,24 @@ public class Wall {
         return  out;
     }
 
-    public Brick[] getBricks() {
-        return bricks;
+    public void move(){//player and ball move
+        player.move();
+        ball.move();
     }
 
-    public void setBricks(Brick[] bricks) {
-        this.bricks = bricks;
-    }
+    public boolean ballEnd(){return ballCount == 0;}
 
-    public Ball getBall() {
-        return ball;
-    }
+    public boolean isDone(){return brickCount == 0;}
 
-    public void setBall(Ball ball) {
-        this.ball = ball;
-    }
+    public int getBrickCount(){return brickCount;}
 
-    public Player getPlayer() {
-        return player;
-    }
+    public int getBallCount(){return ballCount;}
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
+    public boolean isBallLost(){return ballLost;}
+
+    public Brick[] getBricks() {return bricks;}
+
+    public Ball getBall() {return ball;}
+
+    public Player getPlayer() {return player;}
 }

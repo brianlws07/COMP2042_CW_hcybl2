@@ -36,7 +36,7 @@ public class CementBrick extends Brick {
         //if brick is not broken
         if(!super.isBroken()){
             //make Crack on the Brick
-            crack.makeCrack(point,dir);
+            crack.makeCrack(point,dir,brickFace);
             updateBrick();
             return false;
         }
