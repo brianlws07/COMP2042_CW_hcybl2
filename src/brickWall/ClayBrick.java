@@ -1,7 +1,5 @@
 package brickWall;
 
-import brickWall.Brick;
-
 import java.awt.*;
 import java.awt.Point;
 
@@ -27,7 +25,7 @@ public class ClayBrick extends Brick {
     protected Shape makeBrickFace(Point pos, Dimension size) {return new Rectangle(pos,size);}//return a constructed Rectangle
     @Override
     public Shape getBrick() {
-        return super.brickFace;
+        return super.getBrickFace();
     }//return the brickFace of super class Brick
 
 

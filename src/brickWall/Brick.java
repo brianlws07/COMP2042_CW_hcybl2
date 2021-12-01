@@ -23,7 +23,7 @@ abstract public class Brick  {
     private static Random rnd;
 
     private String name;// name is assigned but never accessed
-    Shape brickFace;
+    private Shape brickFace;
 
     private Color border;
     private Color inner;
@@ -100,6 +100,14 @@ abstract public class Brick  {
 
     public final boolean isBroken(){
         return broken;
+    }
+
+    public Shape getBrickFace() {
+        return brickFace;
+    }
+
+    public void setBrickFace(Shape brickFace) {
+        this.brickFace = brickFace;
     }
 
     public class Crack{

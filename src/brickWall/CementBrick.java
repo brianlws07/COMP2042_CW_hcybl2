@@ -1,7 +1,5 @@
 package brickWall;
 
-import brickWall.Brick;
-
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
@@ -25,7 +23,7 @@ public class CementBrick extends Brick {
     public CementBrick(Point point, Dimension size){
         super(NAME,point,size,DEF_BORDER,DEF_INNER,CEMENT_STRENGTH);
         crack = new Crack(DEF_CRACK_DEPTH,DEF_STEPS); //DEF_CRACK_DEPTH = 1, DEF_STEPS = 35
-        brickFace = super.brickFace;
+        brickFace = super.getBrickFace();
     }
 
     @Override
@@ -51,7 +49,7 @@ public class CementBrick extends Brick {
         if(!super.isBroken()){
             //draw crack on brick face
             GeneralPath gp = crack.draw();
-            gp.append(super.brickFace,false);
+            gp.append(super.getBrickFace(),false);
             brickFace = gp;
         }
     }
@@ -62,7 +60,7 @@ public class CementBrick extends Brick {
         //remove crack path in bricks
         crack.reset();
         //set brickFace to superclass(Brick).brickFace
-        brickFace = super.brickFace;
+        brickFace = super.getBrickFace();
     }
 
     //overriden abstract method
