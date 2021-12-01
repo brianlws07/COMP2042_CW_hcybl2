@@ -63,12 +63,10 @@ public class SteelBrick extends Brick {
         return super.isBroken();
     }
 
-    //overriden abstract method
+    /*//overriden abstract method
     @Override
-    protected Shape makeBrickFace(Point pos, Dimension size) {return new Rectangle(pos,size);}//return newly constructed Rectangle
+    protected Shape makeBrickFace(Point pos, Dimension size) {return new Rectangle(pos,size);}//return newly constructed Rectangle*/
     @Override
-    public Shape getBrick() {
-        return brickFace;
-    }//return the brickFace of super class Brick
+    public Shape getBrick() {return brickFace;}//return the brickFace of super class Brick
 
 }

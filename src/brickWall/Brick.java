@@ -87,7 +87,7 @@ abstract public class Brick  {
     }
 
     //abstract method (by subclass but same implementation):
-    protected abstract Shape makeBrickFace(Point pos,Dimension size);
+    protected Shape makeBrickFace(Point pos, Dimension size) {return new Rectangle(pos,size);}//return a constructed Rectangle
     public abstract Shape getBrick();
 
     public Color getBorderColor(){
@@ -102,13 +102,7 @@ abstract public class Brick  {
         return broken;
     }
 
-    public Shape getBrickFace() {
-        return brickFace;
-    }
-
-    public void setBrickFace(Shape brickFace) {
-        this.brickFace = brickFace;
-    }
+    public Shape getBrickFace() {return brickFace;}
 
     public class Crack{
 
@@ -212,6 +206,7 @@ abstract public class Brick  {
                 //y = h * i from start.y + (random number between 0 and 1)
                 y = (i * h) + start.y + randomInBounds(bound); //bound is 1
 
+                
                 //to check whether i is larger than low & lower than up
                 //y is set to y + random number based on jump
                 if(inMiddle(i,CRACK_SECTIONS,steps)) //CRACK_SECTIONS = 3, steps = 35

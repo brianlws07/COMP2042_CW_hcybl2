@@ -20,13 +20,11 @@ public class ClayBrick extends Brick {
     }
 
 
-    //overriden abstract method
+    /*//overriden abstract method
     @Override
-    protected Shape makeBrickFace(Point pos, Dimension size) {return new Rectangle(pos,size);}//return a constructed Rectangle
+    protected Shape makeBrickFace(Point pos, Dimension size) {return new Rectangle(pos,size);}//return a constructed Rectangle*/
     @Override
-    public Shape getBrick() {
-        return super.getBrickFace();
-    }//return the brickFace of super class Brick
+    public Shape getBrick() {return super.getBrickFace();}//return the brickFace of super class Brick
 
 
 }
