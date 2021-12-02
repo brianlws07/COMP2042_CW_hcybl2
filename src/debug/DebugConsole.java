@@ -75,15 +75,23 @@ public class DebugConsole extends JDialog implements WindowListener{
         this.setLocation(x,y);
     }
 
-
     @Override
-    public void windowOpened(WindowEvent windowEvent) {}
+    public void windowActivated(WindowEvent windowEvent) {
+        //so that debugConsole is in the middle when opened
+        setLocation();
+        Ball b = wall.getBall();
+        //the knob of slider is automatically set to the value of the ball
+        debugPanel.setValues(b.getSpeedX(),b.getSpeedY());
+    }
 
     //when DebugConsole is closed, the whole gameBoard is reset again
     @Override
     public void windowClosing(WindowEvent windowEvent) {
         gameBoard.repaint();
     }
+
+    @Override
+    public void windowOpened(WindowEvent windowEvent) {}
 
     @Override
     public void windowClosed(WindowEvent windowEvent) {}
@@ -93,15 +101,6 @@ public class DebugConsole extends JDialog implements WindowListener{
 
     @Override
     public void windowDeiconified(WindowEvent windowEvent) {}
-
-    @Override
-    public void windowActivated(WindowEvent windowEvent) {
-        //so that debugConsole is in the middle when opened
-        setLocation();
-        Ball b = wall.getBall();
-        //the knob of slider is automatically set to the value of the ball
-        debugPanel.setValues(b.getSpeedX(),b.getSpeedY());
-    }
 
     @Override
     public void windowDeactivated(WindowEvent windowEvent) {}

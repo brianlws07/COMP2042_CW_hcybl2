@@ -203,10 +203,29 @@ public class Wall {
         return tmp;
     }
 
+    //method makeBrick
+    //creates a brick object based on type at the exact location point
+    private Brick makeBrick(Point point, Dimension size, int type){
+        Brick out;
+        switch(type){
+            case CLAY:
+                out = new ClayBrick(point,size);
+                break;
+            case STEEL:
+                out = new SteelBrick(point,size);
+                break;
+            case CEMENT:
+                out = new CementBrick(point, size);
+                break;
+            default:
+                throw  new IllegalArgumentException(String.format("Unknown Type:%d\n",type));
+        }
+        return  out;
+    }
+
     public void findImpacts(){
-        //if ball impacts player bar
+        //if ball impacts player bar, rebound the ball upwards
         if(player.impact(ball)){
-            //rebound the ball upwards
             ball.reverseY();
         }
         //if the brick is broken, then decrement no. of brick by 1
@@ -256,6 +275,7 @@ public class Wall {
         }
         return false;
     }
+
     //returns True if the ball goes beyond the left or right edge of the Game Frame
     private boolean impactBorder(){
         Point2D p = ball.getPosition();
@@ -304,26 +324,6 @@ public class Wall {
     public void setBallYSpeed(int s){ball.setYSpeed(s);}
 
     public void resetBallCount(){ballCount = 3;}
-
-    //method makeBrick
-    //creates a brick object based on type at the exact location point
-    private Brick makeBrick(Point point, Dimension size, int type){
-        Brick out;
-        switch(type){
-            case CLAY:
-                out = new ClayBrick(point,size);
-                break;
-            case STEEL:
-                out = new SteelBrick(point,size);
-                break;
-            case CEMENT:
-                out = new CementBrick(point, size);
-                break;
-            default:
-                throw  new IllegalArgumentException(String.format("Unknown Type:%d\n",type));
-        }
-        return  out;
-    }
 
     public void move(){//player and ball move
         player.move();
