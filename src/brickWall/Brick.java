@@ -92,9 +92,7 @@ abstract public class Brick  {
         return  border;
     }
 
-    public Color getInnerColor(){
-        return inner;
-    }
+    public Color getInnerColor(){return inner;}
 
     public final boolean isBroken(){
         return broken;

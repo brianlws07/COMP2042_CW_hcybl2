@@ -28,10 +28,10 @@ import java.util.Random;
 public class Wall {
 
     //CONSTANTS:
-    private static final int LEVELS_COUNT = 4;// 4 levels
-    private static final int CLAY = 1;
-    private static final int STEEL = 2;
-    private static final int CEMENT = 3;
+    //private static final int LEVELS_COUNT = 4;// 4 levels
+    //private static final int CLAY = 1;
+    //private static final int STEEL = 2;
+    //private static final int CEMENT = 3;
 
     //private Random rnd;
     private Rectangle area;
@@ -44,6 +44,7 @@ public class Wall {
     //levels is 2D array of Brick, level is type int
     private Brick[][] levels;
     private int level;
+    private Level levelcons;
 
     private final Point startPoint;
     private int brickCount;
@@ -54,8 +55,9 @@ public class Wall {
     public Wall(Rectangle drawArea, int brickCount, int lineCount, double brickDimensionRatio, Point ballPos){
 
         this.startPoint = new Point(ballPos);//startPoint on (300, 430)
+        this.levelcons = new Level();
 
-        levels = makeLevels(drawArea,brickCount,lineCount,brickDimensionRatio);
+        levels = levelcons.makeLevels(drawArea,brickCount,lineCount,brickDimensionRatio);
         level = 0;
 
         ballCount = 3;
@@ -80,6 +82,7 @@ public class Wall {
 
     private void makeBall(Point2D ballPos){ball = new RubberBall(ballPos);}//construct a new RubberBall
 
+    /*
     private Brick[][] makeLevels(Rectangle drawArea,int brickCount,int lineCount,double brickDimensionRatio){
         //construct a tmp variable of type 2D array of Bricks, LEVELS_COUNT is 4
         Brick[][] tmp = new Brick[LEVELS_COUNT][];
@@ -92,10 +95,10 @@ public class Wall {
     }
 
     private Brick[] makeSingleTypeLevel(Rectangle drawArea, int brickCnt, int lineCnt, double brickSizeRatio, int type){
-        /*
-          if brickCount is not divisible by line count,brickCount is adjusted to the biggest
-          multiple of lineCount smaller then brickCount
-         */
+
+          //if brickCount is not divisible by line count,brickCount is adjusted to the biggest
+          //multiple of lineCount smaller then brickCount
+
         //so that the number of Bricks are able to fill in the JPanel
         //31bricks, 3 lineCount, so brickCount = 31 - 31%3
         //                                     = 30
@@ -154,10 +157,10 @@ public class Wall {
 
     //most implementation here are similar to makeSingleTypeLevel
     private Brick[] makeChessboardLevel(Rectangle drawArea, int brickCnt, int lineCnt, double brickSizeRatio, int typeA, int typeB){
-        /*
-          if brickCount is not divisible by line count,brickCount is adjusted to the biggest
-          multiple of lineCount smaller then brickCount
-         */
+
+          //if brickCount is not divisible by line count,brickCount is adjusted to the biggest
+          //multiple of lineCount smaller then brickCount
+
         brickCnt -= brickCnt % lineCnt; //set brickCnt to 30
 
         int brickOnLine = brickCnt / lineCnt; //set brickOnLine to 10
@@ -223,6 +226,9 @@ public class Wall {
         }
         return  out;
     }
+
+
+     */
 
     public void findImpacts(){
         //if ball impacts player bar, rebound the ball upwards
