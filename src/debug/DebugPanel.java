@@ -37,11 +37,11 @@ public class DebugPanel extends JPanel {
     private JSlider ballXSpeed;
     private JSlider ballYSpeed;
 
-    private Wall wall;
+    //private Wall wall;
 
     public DebugPanel(Wall wall){
 
-        this.wall = wall;
+        //this.wall = wall;
 
         //this initializes the DebugPanel components
         initialize();

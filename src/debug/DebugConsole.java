@@ -86,9 +86,7 @@ public class DebugConsole extends JDialog implements WindowListener{
 
     //when DebugConsole is closed, the whole gameBoard is reset again
     @Override
-    public void windowClosing(WindowEvent windowEvent) {
-        gameBoard.repaint();
-    }
+    public void windowClosing(WindowEvent windowEvent) {gameBoard.repaint();}
 
     @Override
     public void windowOpened(WindowEvent windowEvent) {}
