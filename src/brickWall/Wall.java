@@ -45,7 +45,7 @@ public class Wall {
     private Brick[][] levels;
     private int level;
 
-    private Point startPoint;
+    private final Point startPoint;
     private int brickCount;
     private int ballCount; //3
     private boolean ballLost;
@@ -59,12 +59,13 @@ public class Wall {
         level = 0;
 
         ballCount = 3;
-        ballLost = false;
 
         rnd = new Random();
 
         makeBall(ballPos);//construct a new RubberBall on (300, 430)
-        int speedX,speedY;
+        player = new Player((Point) ballPos.clone(),150,10, drawArea);
+        ballspeedReset();
+        /*int speedX,speedY;
         do{speedX = rnd.nextInt(5) - 2;//speedX is rnd between 0, 1, 2
         }while(speedX == 0);
         do{
@@ -72,8 +73,8 @@ public class Wall {
         }while(speedY == 0);
         //set the speed of the ball to the new speedX, speedY
         ball.setSpeed(speedX,speedY);
+        ballLost = false;*/
 
-        player = new Player((Point) ballPos.clone(),150,10, drawArea);
         area = drawArea;//it is the whole area of JFrame not inclusive of the top bar
     }
 
@@ -289,14 +290,17 @@ public class Wall {
     public void ballReset(){
         player.moveTo(startPoint);
         ball.moveTo(startPoint);
-        int speedX,speedY;
-        do{
+        ballspeedReset();
+    }
+
+    public void ballspeedReset(){
+        int speedX = 2,speedY = -3;
+        /*do{
             speedX = rnd.nextInt(5) - 2; //0, 1, 2
         }while(speedX == 0);
         do{
             speedY = -rnd.nextInt(3); //-2, -1, 0
-        }while(speedY == 0);
-
+        }while(speedY == 0);*/
         ball.setSpeed(speedX,speedY);
         ballLost = false;
     }
