@@ -20,7 +20,7 @@ abstract public class Brick  {
     public static final int LEFT_IMPACT = 300;
     public static final int RIGHT_IMPACT = 400;
 
-    private String name;// name is assigned but never accessed
+    //private String name;// name is assigned but never accessed
     private Shape brickFace;
 
     private Color border;
@@ -35,7 +35,7 @@ abstract public class Brick  {
     public Brick(String name, Point pos,Dimension size,Color border,Color inner,int strength){
         //rnd = new Random();//used in crack class
         broken = false;
-        this.name = name;
+        //this.name = name;
         brickFace = makeBrickFace(pos,size);//construct rectangle Brick
         this.border = border;//border color
         this.inner = inner;//inner color
