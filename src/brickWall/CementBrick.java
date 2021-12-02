@@ -11,7 +11,7 @@ public class CementBrick extends Brick {
     //- Inner Color is Grey
     //- Border Color is Cream White
     //- Clay Strength is 2
-    private static final String NAME = "Cement Brick";
+    //private static final String NAME = "Cement Brick";
     private static final Color DEF_INNER = new Color(147, 147, 147);
     private static final Color DEF_BORDER = new Color(217, 199, 175);
     private static final int CEMENT_STRENGTH = 2;
@@ -21,7 +21,7 @@ public class CementBrick extends Brick {
 
     //constructor of class CementBrick
     public CementBrick(Point point, Dimension size){
-        super(NAME,point,size,DEF_BORDER,DEF_INNER,CEMENT_STRENGTH);
+        super(point,size,DEF_BORDER,DEF_INNER,CEMENT_STRENGTH);
         crack = new Crack(DEF_CRACK_DEPTH,DEF_STEPS); //DEF_CRACK_DEPTH = 1, DEF_STEPS = 35
         brickFace = super.getBrickFace();
     }

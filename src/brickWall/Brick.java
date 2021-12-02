@@ -32,7 +32,7 @@ abstract public class Brick  {
     private boolean broken;
 
     //constructor of Brick class
-    public Brick(String name, Point pos,Dimension size,Color border,Color inner,int strength){
+    public Brick(Point pos,Dimension size,Color border,Color inner,int strength){
         //rnd = new Random();//used in crack class
         broken = false;
         //this.name = name;
