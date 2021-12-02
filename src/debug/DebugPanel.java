@@ -75,6 +75,8 @@ public class DebugPanel extends JPanel {
         //initialize the buttons with title
         JButton out = new JButton(title);
         out.addActionListener(e);
+        out.setForeground(Color.WHITE);
+        out.setBackground(new Color(255,153,153));
         return  out;
     }
 
@@ -87,6 +89,8 @@ public class DebugPanel extends JPanel {
         //display the tick
         out.setPaintTicks(true);
         out.addChangeListener(e);
+        out.setForeground(Color.WHITE);
+        out.setBackground(new Color(255,204,204));
         return out;
     }
 
