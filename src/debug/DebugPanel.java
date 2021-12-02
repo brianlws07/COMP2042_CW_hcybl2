@@ -27,7 +27,7 @@ import java.awt.event.ActionListener;
 //panel that contains the button and slider in the debugconsole (alt+shift+f1)
 public class DebugPanel extends JPanel {
 
-    private static final Color DEF_BKG = Color.WHITE;
+    //private static final Color DEF_BKG = Color.WHITE;
 
     //button skipLevel, resetBalls
     private JButton skipLevel;
@@ -66,7 +66,7 @@ public class DebugPanel extends JPanel {
 
     private void initialize(){
         //set background to white
-        this.setBackground(DEF_BKG);
+        //this.setBackground(DEF_BKG);
         //set layout to fit 2 buttons, 2 columns
         this.setLayout(new GridLayout(2,2));
     }
@@ -89,7 +89,7 @@ public class DebugPanel extends JPanel {
         //display the tick
         out.setPaintTicks(true);
         out.addChangeListener(e);
-        out.setForeground(Color.WHITE);
+        out.setForeground(Color.BLUE);
         out.setBackground(new Color(255,204,204));
         return out;
     }
