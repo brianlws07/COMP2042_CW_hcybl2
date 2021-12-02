@@ -33,7 +33,7 @@ public class Wall {
     private static final int STEEL = 2;
     private static final int CEMENT = 3;
 
-    private Random rnd;
+    //private Random rnd;
     private Rectangle area;
 
     private Brick[] bricks;
@@ -60,7 +60,7 @@ public class Wall {
 
         ballCount = 3;
 
-        rnd = new Random();
+        //rnd = new Random();
 
         makeBall(ballPos);//construct a new RubberBall on (300, 430)
         player = new Player((Point) ballPos.clone(),150,10, drawArea);
