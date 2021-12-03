@@ -4,10 +4,11 @@ import java.awt.*;
 
 public class Level {
 
-    private static final int LEVELS_COUNT = 4;// 4 levels
+    private static final int LEVELS_COUNT = 5;// 4 levels
     private static final int CLAY = 1;
     private static final int STEEL = 2;
     private static final int CEMENT = 3;
+    private static final int YELLOWBRICK = 4;
 
     Brick[][] makeLevels(Rectangle drawArea, int brickCount, int lineCount, double brickDimensionRatio){
         //construct a tmp variable of type 2D array of Bricks, LEVELS_COUNT is 4
@@ -17,6 +18,7 @@ public class Level {
         tmp[1] = makeChessboardLevel(drawArea,brickCount,lineCount,brickDimensionRatio,CLAY,CEMENT);
         tmp[2] = makeChessboardLevel(drawArea,brickCount,lineCount,brickDimensionRatio,CLAY,STEEL);
         tmp[3] = makeChessboardLevel(drawArea,brickCount,lineCount,brickDimensionRatio,STEEL,CEMENT);
+        tmp[4] = makefinalLevel(drawArea,brickCount,lineCount,brickDimensionRatio,YELLOWBRICK,CEMENT);
         return tmp;
     }
 
@@ -133,6 +135,57 @@ public class Level {
         return tmp;
     }
 
+    private Brick[] makefinalLevel(Rectangle drawArea, int brickCnt, int lineCnt, double brickSizeRatio, int typeA, int typeB){
+        /*
+          if brickCount is not divisible by line count,brickCount is adjusted to the biggest
+          multiple of lineCount smaller then brickCount
+         */
+        brickCnt -= brickCnt % lineCnt; //set brickCnt to 30
+
+        int brickOnLine = brickCnt / lineCnt; //set brickOnLine to 10
+
+        //needed for setting the brick pattern in 2nd line (line 1)
+        int centerLeft = brickOnLine / 2 - 1; //centerLeft is 4
+        int centerRight = brickOnLine / 2 + 1; //centerRight is 6
+
+        double brickLen = drawArea.getWidth() / brickOnLine; //length of single brick
+        double brickHgt = brickLen / brickSizeRatio; //height of single brick
+
+        brickCnt += lineCnt / 2;// set brickCnt back to 31
+
+        Brick[] tmp  = new Brick[brickCnt]; // set tmp as Brick[31]
+
+        Dimension brickSize = new Dimension((int) brickLen,(int) brickHgt); // initialize Dimension brickSize for a single brick
+        Point p = new Point();
+
+        int i;
+        for(i = 0; i < tmp.length; i++){
+            int line = i / brickOnLine;
+            if(line == lineCnt)
+                break;
+            //this sections sets the x and y coordinate for the bricks
+            int posX = i % brickOnLine;
+            double x = posX * brickLen;
+            x =(line % 2 == 0) ? x : (x - (brickLen / 2));
+            double y = (line) * brickHgt;
+            p.setLocation(x,y);
+
+            //set pattern for the bricks
+            //for line 0, 2 the pattern of every brick will alternate each other
+            //for line 1 only brick 5 and 6 will be different pattern than the rest in line
+            boolean b = i % 2 == 0;
+            tmp[i] = b ?  makeBrick(p,brickSize,typeA) : makeBrick(p,brickSize,typeB);
+        }
+
+        //this is specifically for the last brick in the 2nd line (line 1)
+        for(double y = brickHgt;i < tmp.length;i++, y += 2*brickHgt){
+            double x = (brickOnLine * brickLen) - (brickLen / 2);
+            p.setLocation(x,y);
+            tmp[i] = makeBrick(p,brickSize,typeA);
+        }
+        return tmp;
+    }
+
     //method makeBrick
     //creates a brick object based on type at the exact location point
     private Brick makeBrick(Point point, Dimension size, int type){
@@ -146,6 +199,9 @@ public class Level {
                 break;
             case CEMENT:
                 out = new CementBrick(point, size);
+                break;
+            case YELLOWBRICK:
+                out = new YellowBrick(point, size);
                 break;
             default:
                 throw  new IllegalArgumentException(String.format("Unknown Type:%d\n",type));
