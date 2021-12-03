@@ -82,9 +82,7 @@ public class Player {
 
     public void moveLeft(){moveAmount = -DEF_MOVE_AMOUNT;}//move player bar to left
     public void movRight(){moveAmount = DEF_MOVE_AMOUNT;}//move player bar to left
-    public void stop(){
-        moveAmount = 0;
-    }//stop player bar
+    public void stop(){moveAmount = 0;}//stop player bar
 
     public Shape getPlayerFace(){
         return  playerFace;
