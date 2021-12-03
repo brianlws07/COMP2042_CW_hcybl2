@@ -73,12 +73,13 @@ public class Level {
             tmp[i] = makeBrick(p,brickSize,type);
         }
 
-        //this is specifically for the last brick in the 2nd line (line 1)
+        /*//this is specifically for the last brick in the 2nd line (line 1)
         for(double y = brickHgt;i < tmp.length;i++, y += 2*brickHgt){
             double x = (brickOnLine * brickLen) - (brickLen / 2);
             p.setLocation(x,y);
             tmp[i] = new ClayBrick(p,brickSize);
-        }
+        }*/
+        _2ndlinelastbrick(brickHgt, tmp, brickOnLine, brickLen, p, i, brickSize, type);
         return tmp;
 
     }
@@ -126,12 +127,13 @@ public class Level {
             tmp[i] = b ?  makeBrick(p,brickSize,typeA) : makeBrick(p,brickSize,typeB);
         }
 
-        //this is specifically for the last brick in the 2nd line (line 1)
+        /*//this is specifically for the last brick in the 2nd line (line 1)
         for(double y = brickHgt;i < tmp.length;i++, y += 2*brickHgt){
             double x = (brickOnLine * brickLen) - (brickLen / 2);
             p.setLocation(x,y);
             tmp[i] = makeBrick(p,brickSize,typeA);
-        }
+        }*/
+        _2ndlinelastbrick(brickHgt, tmp, brickOnLine, brickLen, p, i, brickSize, typeA);
         return tmp;
     }
 
@@ -143,10 +145,6 @@ public class Level {
         brickCnt -= brickCnt % lineCnt; //set brickCnt to 30
 
         int brickOnLine = brickCnt / lineCnt; //set brickOnLine to 10
-
-        //needed for setting the brick pattern in 2nd line (line 1)
-        int centerLeft = brickOnLine / 2 - 1; //centerLeft is 4
-        int centerRight = brickOnLine / 2 + 1; //centerRight is 6
 
         double brickLen = drawArea.getWidth() / brickOnLine; //length of single brick
         double brickHgt = brickLen / brickSizeRatio; //height of single brick
@@ -170,20 +168,26 @@ public class Level {
             double y = (line) * brickHgt;
             p.setLocation(x,y);
 
-            //set pattern for the bricks
-            //for line 0, 2 the pattern of every brick will alternate each other
-            //for line 1 only brick 5 and 6 will be different pattern than the rest in line
             boolean b = i % 2 == 0;
             tmp[i] = b ?  makeBrick(p,brickSize,typeA) : makeBrick(p,brickSize,typeB);
         }
 
-        //this is specifically for the last brick in the 2nd line (line 1)
+        /*//this is specifically for the last brick in the 2nd line (line 1)
         for(double y = brickHgt;i < tmp.length;i++, y += 2*brickHgt){
             double x = (brickOnLine * brickLen) - (brickLen / 2);
             p.setLocation(x,y);
             tmp[i] = makeBrick(p,brickSize,typeA);
-        }
+        }*/
+        _2ndlinelastbrick(brickHgt, tmp, brickOnLine, brickLen, p, i, brickSize, typeA);
         return tmp;
+    }
+
+    private void _2ndlinelastbrick(double brickHgt, Brick[] tmp, int brickOnLine, double brickLen, Point p, int i, Dimension brickSize, int typeA){
+        for(double y = brickHgt; i < tmp.length; i++, y += 2*brickHgt){
+            double x = (brickOnLine * brickLen) - (brickLen / 2);
+            p.setLocation(x,y);
+            tmp[i] = makeBrick(p,brickSize,typeA);
+        }
     }
 
     //method makeBrick
