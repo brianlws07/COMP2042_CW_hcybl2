@@ -147,9 +147,10 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
     private void drawContainer(Graphics2D g2d){
         Color prev = g2d.getColor();
 
+        /*
         //set and fill up background with Dark Green color
         g2d.setColor(BG_COLOR);
-        g2d.fill(menuFace);
+        g2d.fill(menuFace);*/
 
         Stroke tmp = g2d.getStroke();
 
@@ -318,6 +319,7 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
             System.exit(0);
         }
         else if(infoButton.contains(p)){
+            new InfoFrame();
         }
     }
 

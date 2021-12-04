@@ -114,8 +114,6 @@ public class Crack{
                 //y is set to y + random number based on jump
                 if(inMiddle(i,CRACK_SECTIONS,steps)) //CRACK_SECTIONS = 3, steps = 35
                     y += jumps(jump,JUMP_PROBABILITY); //jump = 5, jump probability = 0.7
-
-
                  */
 
             //connect path to new (x, y)

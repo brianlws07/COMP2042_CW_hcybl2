@@ -63,7 +63,7 @@ public class CementBrick extends Brick {
         brickFace = super.getBrickFace();
     }
 
-    /*//overriden abstract method
+    /*//Overriden abstract method
     @Override
     protected Shape makeBrickFace(Point pos, Dimension size) {return new Rectangle(pos,size);}//return newly constructed Rectangle*/
     @Override
