@@ -32,7 +32,7 @@ public class InfoFrame extends JFrame {
         //this set the title and visible of the frame to true
         this.setTitle(DEF_TITLE);
         this.setPreferredSize(new Dimension(DEF_WIDTH,DEF_HEIGHT));
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.pack();
         this.setResizable(false);
         this.setLayout(null);

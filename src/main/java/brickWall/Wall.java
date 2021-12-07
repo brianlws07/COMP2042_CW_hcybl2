@@ -21,8 +21,11 @@ import ball.Ball;
 import ball.RubberBall;
 import ball.Player;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.*;
+import java.nio.Buffer;
 import java.util.Random;
 
 public class Wall {
@@ -51,6 +54,9 @@ public class Wall {
     private int ballCount; //3
     private boolean ballLost;
 
+    private int score;
+    private String highscore = "";
+
     //constructor class Wall
     public Wall(Rectangle drawArea, int brickCount, int lineCount, double brickDimensionRatio, Point ballPos){
 
@@ -59,10 +65,14 @@ public class Wall {
 
         levels = levelcons.makeLevels(drawArea,brickCount,lineCount,brickDimensionRatio);
         level = 0;
-
         ballCount = 3;
 
         //rnd = new Random();
+
+        score = 0;
+        if (highscore.equals("")){
+            highscore = this.getHighscore();
+        }
 
         makeBall(ballPos);//construct a new RubberBall on (300, 430)
         player = new Player((Point) ballPos.clone(),150,10, drawArea);
@@ -81,6 +91,61 @@ public class Wall {
     }
 
     private void makeBall(Point2D ballPos){ball = new RubberBall(ballPos);}//construct a new RubberBall
+
+    public String getHighscore(){
+        //format: Brandon:100
+        FileReader readFile = null;
+        BufferedReader reader = null;
+        try {
+            readFile = new FileReader("highscore.dat");
+            reader = new BufferedReader(readFile);
+            return reader.readLine();
+        } catch (Exception e) {
+            return "Nobody:0";
+        }
+        finally{
+            try {
+                if (reader != null)
+                    reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void checkScore(){
+
+        if (highscore.equals(""))
+            return;
+
+        //format: Brandon/:/100
+        if (score > Integer.parseInt(highscore.split(":")[1])){
+            String name = JOptionPane.showInputDialog("You set a new highscore!!! Enter your name");
+            highscore = name + ":" + score;
+
+            File scoreFile = new File("highscore.dat");
+
+            if(!scoreFile.exists()){
+                try {
+                    scoreFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            //FileWriter writeFile = null;
+            //BufferedWriter writer = null;
+            try {
+                FileWriter writeFile = new FileWriter(scoreFile);
+                BufferedWriter writer = new BufferedWriter(writeFile);
+                writer.write(this.getHighscore());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     /*
     private Brick[][] makeLevels(Rectangle drawArea,int brickCount,int lineCount,double brickDimensionRatio){
@@ -241,6 +306,7 @@ public class Wall {
             * because for every brick program checks for horizontal and vertical impacts
             */
             brickCount--;
+            score++;
         }
         //if ball reaches the left and right edge of the GameFrame, then rebound the ball in the reverse direction from the direction it came
         else if(impactBorder()) {

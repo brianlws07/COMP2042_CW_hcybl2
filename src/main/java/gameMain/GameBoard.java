@@ -94,6 +94,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                 if(wall.ballEnd()){
                     wall.wallReset();
                     message = "Game over";
+                    wall.checkScore();
                 }
                 wall.ballReset();
                 gameTimer.stop();
@@ -111,6 +112,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                 if(wall.hasLevel()){
                     message = "Go to Next Level";
                     gameTimer.stop();
+                    wall.checkScore();
                     wall.ballReset();
                     wall.wallReset();
                     wall.nextLevel();
@@ -118,6 +120,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                 else{
                     message = "ALL WALLS DESTROYED";
                     gameTimer.stop();
+                    wall.checkScore();
                 }
             }
             //repaint the GameBoard after that
@@ -138,7 +141,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     //this is a built in paint method, so paint() doesn't have to be called explicitly,
     //it will be called automatically everytime constructor for GameBoard is called
     //paint method draws all component in GameBoard
-    //paint -> clear -> drawString -> drawBall -> drawBrick -> drawPlayer -> drawMenu -> obscureGameBoard -> drawPauseMenu
+    //paint -> clear -> drawString -> drawScore -> drawBall -> drawBrick -> drawPlayer -> drawMenu -> obscureGameBoard -> drawPauseMenu
     public void paint(Graphics g){
 
         Graphics2D g2d = (Graphics2D) g;
@@ -148,6 +151,10 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         //draw the message text on screen with blue color
         g2d.setColor(Color.BLUE);
         g2d.drawString(message,250,225);
+
+        //draw high score
+        drawScore(g2d);
+
         //draw the ball on screen
         drawBall(wall.getBall(),g2d);
         //for all the bricks that are not broken, draw the bricks on screen
@@ -172,6 +179,10 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         g2d.fillRect(0,0,getWidth(),getHeight());
         //restore the g2d color
         g2d.setColor(tmp);
+    }
+
+    private void drawScore(Graphics2D g2d){
+        g2d.drawString("HighScore: "+wall.getHighscore(),250,250);
     }
 
     private void drawBrick(Brick brick,Graphics2D g2d){
