@@ -48,6 +48,8 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     private Wall wall;
 
     private String message;
+    //private String scoremessage;
+    //private String highscoremessage;
 
     private boolean showPauseMenu;
 
@@ -59,6 +61,8 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     private int strLen;
 
     private DebugConsole debugConsole;
+
+    private Image background;
 
     public GameBoard(JFrame owner){
         //constructor JComponent
@@ -86,6 +90,8 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
             wall.findImpacts();
             //display no. bricks and no.balls on screen
             message = String.format("Bricks: %d Balls %d",wall.getBrickCount(),wall.getBallCount());
+            //scoremessage = String.format("Score: %d: ",wall.getScore());
+            //highscoremessage = String.format("HighScore %s",wall.getHighscore());
             //if a ball is lost,
             //then check if all ball are lost, if yes then restore the walls and output message "Game over"
             //then reset ball and player bar back to original position
@@ -94,7 +100,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                 if(wall.ballEnd()){
                     wall.wallReset();
                     message = "Game over";
-                    wall.checkScore();
+                    //wall.checkScore();
                 }
                 wall.ballReset();
                 gameTimer.stop();
@@ -112,7 +118,6 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                 if(wall.hasLevel()){
                     message = "Go to Next Level";
                     gameTimer.stop();
-                    wall.checkScore();
                     wall.ballReset();
                     wall.wallReset();
                     wall.nextLevel();
@@ -120,7 +125,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                 else{
                     message = "ALL WALLS DESTROYED";
                     gameTimer.stop();
-                    wall.checkScore();
+                    //wall.checkScore();
                 }
             }
             //repaint the GameBoard after that
@@ -148,12 +153,17 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
         //fill up white background color
         clear(g2d);
+
+        background = new ImageIcon(getClass().getResource("/kirby_bg.png")).getImage();
+        g2d.drawImage(background,0,0,DEF_WIDTH,DEF_HEIGHT,null);
+
         //draw the message text on screen with blue color
-        g2d.setColor(Color.BLUE);
+        g2d.setColor(Color.GREEN);
         g2d.drawString(message,250,225);
 
         //draw high score
-        drawScore(g2d);
+        //g2d.drawString(scoremessage,250,250);
+        //g2d.drawString(highscoremessage,250,275);
 
         //draw the ball on screen
         drawBall(wall.getBall(),g2d);
@@ -179,10 +189,6 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         g2d.fillRect(0,0,getWidth(),getHeight());
         //restore the g2d color
         g2d.setColor(tmp);
-    }
-
-    private void drawScore(Graphics2D g2d){
-        g2d.drawString("HighScore: "+wall.getHighscore(),250,250);
     }
 
     private void drawBrick(Brick brick,Graphics2D g2d){
@@ -365,29 +371,19 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     }
 
     @Override
-    public void mousePressed(MouseEvent mouseEvent) {
-
-    }
+    public void mousePressed(MouseEvent mouseEvent) {}
 
     @Override
-    public void mouseReleased(MouseEvent mouseEvent) {
-
-    }
+    public void mouseReleased(MouseEvent mouseEvent) {}
 
     @Override
-    public void mouseEntered(MouseEvent mouseEvent) {
-
-    }
+    public void mouseEntered(MouseEvent mouseEvent) {}
 
     @Override
-    public void mouseExited(MouseEvent mouseEvent) {
-
-    }
+    public void mouseExited(MouseEvent mouseEvent) {}
 
     @Override
-    public void mouseDragged(MouseEvent mouseEvent) {
-
-    }
+    public void mouseDragged(MouseEvent mouseEvent) {}
 
     //if mouse cursor hover over any buttons in pause menu, then mouse cursor turns into a hand cursor
     @Override

@@ -54,8 +54,12 @@ public class Wall {
     private int ballCount; //3
     private boolean ballLost;
 
-    private int score;
+    private Random rnd;
+
+    /*
+    private int score = 0;
     private String highscore = "";
+     */
 
     //constructor class Wall
     public Wall(Rectangle drawArea, int brickCount, int lineCount, double brickDimensionRatio, Point ballPos){
@@ -67,17 +71,16 @@ public class Wall {
         level = 0;
         ballCount = 3;
 
-        //rnd = new Random();
+        rnd = new Random();
 
-        score = 0;
-        if (highscore.equals("")){
-            highscore = this.getHighscore();
-        }
+        //if (highscore.equals("")){
+        //    highscore = this.getHighscore();
+        //}
 
         makeBall(ballPos);//construct a new RubberBall on (300, 430)
         player = new Player((Point) ballPos.clone(),150,10, drawArea);
-        ballspeedReset();
-        /*int speedX,speedY;
+        //ballspeedReset();
+        int speedX,speedY;
         do{speedX = rnd.nextInt(5) - 2;//speedX is rnd between 0, 1, 2
         }while(speedX == 0);
         do{
@@ -85,13 +88,14 @@ public class Wall {
         }while(speedY == 0);
         //set the speed of the ball to the new speedX, speedY
         ball.setSpeed(speedX,speedY);
-        ballLost = false;*/
+        ballLost = false;
 
         area = drawArea;//it is the whole area of JFrame not inclusive of the top bar
     }
 
     private void makeBall(Point2D ballPos){ball = new RubberBall(ballPos);}//construct a new RubberBall
 
+    /*
     public String getHighscore(){
         //format: Brandon:100
         FileReader readFile = null;
@@ -147,152 +151,6 @@ public class Wall {
         }
     }
 
-    /*
-    private Brick[][] makeLevels(Rectangle drawArea,int brickCount,int lineCount,double brickDimensionRatio){
-        //construct a tmp variable of type 2D array of Bricks, LEVELS_COUNT is 4
-        Brick[][] tmp = new Brick[LEVELS_COUNT][];
-        //it stores the object of bricks created in the inner array, and there are 31 objects for 31 bricks
-        tmp[0] = makeSingleTypeLevel(drawArea,brickCount,lineCount,brickDimensionRatio,CLAY);
-        tmp[1] = makeChessboardLevel(drawArea,brickCount,lineCount,brickDimensionRatio,CLAY,CEMENT);
-        tmp[2] = makeChessboardLevel(drawArea,brickCount,lineCount,brickDimensionRatio,CLAY,STEEL);
-        tmp[3] = makeChessboardLevel(drawArea,brickCount,lineCount,brickDimensionRatio,STEEL,CEMENT);
-        return tmp;
-    }
-
-    private Brick[] makeSingleTypeLevel(Rectangle drawArea, int brickCnt, int lineCnt, double brickSizeRatio, int type){
-
-          //if brickCount is not divisible by line count,brickCount is adjusted to the biggest
-          //multiple of lineCount smaller then brickCount
-
-        //so that the number of Bricks are able to fill in the JPanel
-        //31bricks, 3 lineCount, so brickCount = 31 - 31%3
-        //                                     = 30
-        //we always have 31 bricks to fill up the JPanel or JFrame
-        brickCnt -= brickCnt % lineCnt;
-
-        //no. of bricks per line (10)
-        int brickOnLine = brickCnt / lineCnt;
-
-        //length of a single brick
-        double brickLen = drawArea.getWidth() / brickOnLine;
-        //height of a single brick
-        //brickSizeRation is w:h
-        double brickHgt = brickLen / brickSizeRatio;
-
-        //set the brickCount from 30 back to 31 again
-        brickCnt += lineCnt / 2;
-
-        //construct tmp as array of Brick with size 31
-        Brick[] tmp  = new Brick[brickCnt];
-
-        //construct brickSize as type Dimension with specified brickLen, brickHgt
-        Dimension brickSize = new Dimension((int) brickLen,(int) brickHgt);
-        //construct new Point p
-        Point p = new Point();
-
-        int i;
-        //for loop executes for 31 times for all bricks
-        for(i = 0; i < tmp.length; i++){
-            //there is only 3 lines, so line = 0, 1, 2
-            int line = i / brickOnLine;
-            //it will only break if it has executed for all 3 lines of bricks
-            if(line == lineCnt)
-                break;
-            //this sections sets the x and y coordinate for the bricks
-            //this set x to the x coordinate of every brick's upper left corner
-            double x = (i % brickOnLine) * brickLen;
-            //even number line(0, 2) will set the x coordinate for brick normally
-            //odd number line(1) will start the line with half the length of the brick
-            x =(line % 2 == 0) ? x : (x - (brickLen / 2));
-            //to set the y coordinate for every brick
-            double y = (line) * brickHgt;
-            p.setLocation(x,y);
-            tmp[i] = makeBrick(p,brickSize,type);
-        }
-
-        //this is specifically for the last brick in the 2nd line (line 1)
-        for(double y = brickHgt;i < tmp.length;i++, y += 2*brickHgt){
-            double x = (brickOnLine * brickLen) - (brickLen / 2);
-            p.setLocation(x,y);
-            tmp[i] = new ClayBrick(p,brickSize);
-        }
-        return tmp;
-
-    }
-
-    //most implementation here are similar to makeSingleTypeLevel
-    private Brick[] makeChessboardLevel(Rectangle drawArea, int brickCnt, int lineCnt, double brickSizeRatio, int typeA, int typeB){
-
-          //if brickCount is not divisible by line count,brickCount is adjusted to the biggest
-          //multiple of lineCount smaller then brickCount
-
-        brickCnt -= brickCnt % lineCnt; //set brickCnt to 30
-
-        int brickOnLine = brickCnt / lineCnt; //set brickOnLine to 10
-
-        //needed for setting the brick pattern in 2nd line (line 1)
-        int centerLeft = brickOnLine / 2 - 1; //centerLeft is 4
-        int centerRight = brickOnLine / 2 + 1; //centerRight is 6
-
-        double brickLen = drawArea.getWidth() / brickOnLine; //length of single brick
-        double brickHgt = brickLen / brickSizeRatio; //height of single brick
-
-        brickCnt += lineCnt / 2;// set brickCnt back to 31
-
-        Brick[] tmp  = new Brick[brickCnt]; // set tmp as Brick[31]
-
-        Dimension brickSize = new Dimension((int) brickLen,(int) brickHgt); // initialize Dimension brickSize for a single brick
-        Point p = new Point();
-
-        int i;
-        for(i = 0; i < tmp.length; i++){
-            int line = i / brickOnLine;
-            if(line == lineCnt)
-                break;
-            //this sections sets the x and y coordinate for the bricks
-            int posX = i % brickOnLine;
-            double x = posX * brickLen;
-            x =(line % 2 == 0) ? x : (x - (brickLen / 2));
-            double y = (line) * brickHgt;
-            p.setLocation(x,y);
-
-            //set pattern for the bricks
-            //for line 0, 2 the pattern of every brick will alternate each other
-            //for line 1 only brick 5 and 6 will be different pattern than the rest in line
-            boolean b = ((line % 2 == 0 && i % 2 == 0) || (line % 2 != 0 && posX > centerLeft && posX <= centerRight));
-            tmp[i] = b ?  makeBrick(p,brickSize,typeA) : makeBrick(p,brickSize,typeB);
-        }
-
-        //this is specifically for the last brick in the 2nd line (line 1)
-        for(double y = brickHgt;i < tmp.length;i++, y += 2*brickHgt){
-            double x = (brickOnLine * brickLen) - (brickLen / 2);
-            p.setLocation(x,y);
-            tmp[i] = makeBrick(p,brickSize,typeA);
-        }
-        return tmp;
-    }
-
-    //method makeBrick
-    //creates a brick object based on type at the exact location point
-    private Brick makeBrick(Point point, Dimension size, int type){
-        Brick out;
-        switch(type){
-            case CLAY:
-                out = new ClayBrick(point,size);
-                break;
-            case STEEL:
-                out = new SteelBrick(point,size);
-                break;
-            case CEMENT:
-                out = new CementBrick(point, size);
-                break;
-            default:
-                throw  new IllegalArgumentException(String.format("Unknown Type:%d\n",type));
-        }
-        return  out;
-    }
-
-
      */
 
     public void findImpacts(){
@@ -306,7 +164,7 @@ public class Wall {
             * because for every brick program checks for horizontal and vertical impacts
             */
             brickCount--;
-            score++;
+            //score++;
         }
         //if ball reaches the left and right edge of the GameFrame, then rebound the ball in the reverse direction from the direction it came
         else if(impactBorder()) {
@@ -362,20 +220,26 @@ public class Wall {
     public void ballReset(){
         player.moveTo(startPoint);
         ball.moveTo(startPoint);
-        ballspeedReset();
-    }
-
-    public void ballspeedReset(){
-        int speedX = 2,speedY = -3;
-        /*do{
+        int speedX, speedY;
+        do{
             speedX = rnd.nextInt(5) - 2; //0, 1, 2
         }while(speedX == 0);
         do{
             speedY = -rnd.nextInt(3); //-2, -1, 0
-        }while(speedY == 0);*/
+        }while(speedY == 0);
         ball.setSpeed(speedX,speedY);
         ballLost = false;
     }
+
+    /*
+    public void ballspeedReset(){
+        int speedX = 2,speedY = -3;
+        ball.setSpeed(speedX,speedY);
+        ballLost = false;
+    }
+
+     */
+
 
     //it restores all the brick
     //it also reset the ballCount to 3 again
@@ -421,4 +285,8 @@ public class Wall {
     public Ball getBall() {return ball;}
 
     public Player getPlayer() {return player;}
+
+    //public int getScore() {return score;}
+
+    //public void setScore(int score) {this.score = score;}
 }
