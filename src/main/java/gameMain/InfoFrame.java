@@ -3,8 +3,9 @@ package gameMain;
 import javax.swing.*;
 import java.awt.*;
 
-import static java.awt.font.TextAttribute.FONT;
-
+/**
+ * InfoFrame that pops up when info button is clicked in HomeMenu
+ */
 public class InfoFrame extends JFrame {
 
     private static final int DEF_WIDTH = 550;
@@ -13,21 +14,20 @@ public class InfoFrame extends JFrame {
     private JLabel background;
     private ImageIcon kirbyicon;
     private JLabel label;
-    private Font infoFont;
 
-    //private Image background;
-
+    /**
+     * Constructor of InfoFrame class which initialize the infoFrame
+     */
     public InfoFrame(){
         InfoGuideText();
         initialize();
-        kirbyicon = new ImageIcon(getClass().getResource("/kirby_info.png"));
-        background = new JLabel(kirbyicon);
-        background.setSize(new Dimension(DEF_WIDTH,DEF_HEIGHT));
-        //this.add(background);
-        background.add(label);
+        setBackground();
         this.add(background);
     }
 
+    /**
+     * Initialize infoFrame as a frame with specific title, size, layout, visibility
+     */
     public void initialize(){
         //this set the title and visible of the frame to true
         this.setTitle(DEF_TITLE);
@@ -40,6 +40,19 @@ public class InfoFrame extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * set an image as background for infoFrame
+     */
+    private void setBackground(){
+        kirbyicon = new ImageIcon(getClass().getResource("/kirby_info.png"));
+        background = new JLabel(kirbyicon);
+        background.setSize(new Dimension(DEF_WIDTH,DEF_HEIGHT));
+        background.add(label);
+    }
+
+    /**
+     * so that infoFrame pops up relative to screenSize regardless of any monitor
+     */
     private void autoLocate(){
         //this get the screenSize of monitor
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
@@ -48,6 +61,9 @@ public class InfoFrame extends JFrame {
         this.setLocation(x,y);
     }
 
+    /**
+     * set label with text that provides guides for player, and set font size, style for the text
+     */
     private void InfoGuideText(){
         label = new JLabel();
         label.setText("<html>" + "<h1>Kirby Brick Destroyer</h1>" +
@@ -64,16 +80,5 @@ public class InfoFrame extends JFrame {
         );
         label.setFont(new Font(null, Font.PLAIN, 15));
         label.setBounds(30,30, 450,350);
-        //label.setHorizontalTextPosition(JLabel.CENTER);
     }
-
-    /*
-    public void paint(Graphics g){drawBackground((Graphics2D)g);}
-
-    private void drawBackground(Graphics2D g){
-        background = new ImageIcon(getClass().getResource("/kirby_info.png")).getImage();
-        g.drawImage(background,0,0,DEF_WIDTH,DEF_HEIGHT,null);
-    }
-
-     */
 }

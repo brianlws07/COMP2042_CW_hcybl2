@@ -29,7 +29,6 @@ public class SteelBrick extends Brick {
     //Border Color = Black
     //Brick Strength = 1
     //Steel Probability = 0.4
-    //private static final String NAME = "Steel Brick";
     private static final Color DEF_INNER = new Color(203, 203, 201);
     private static final Color DEF_BORDER = Color.BLACK;
     private static final int STEEL_STRENGTH = 1;
@@ -38,21 +37,35 @@ public class SteelBrick extends Brick {
     private Random rnd;
     private Shape brickFace;
 
-    //constructor of class SteelBrick
+    /**
+     * constructor of class SteelBrick which set value for bricks' position, size, color, strength, brokenFlag in superclass, Brick
+     *
+     * @param point position of individual brick
+     * @param size size of brick
+     */
     public SteelBrick(Point point, Dimension size){
         super(point,size,DEF_BORDER,DEF_INNER,STEEL_STRENGTH);
-        rnd = new Random();
+        rnd = new Random();//initialize random variable
         brickFace = super.getBrickFace();
     }
 
+    /**
+     * if the random generated double is less than STEEL_PROBABILITY(0.4), then steel brick is broken
+     */
     public void impact(){
-        //if the random generated double is less 0.4
-        //then steel brick is broken
         if(rnd.nextDouble() < STEEL_PROBABILITY){
             super.impact();
         }
     }
 
+    /**
+     * if brick is broken return False, then call impact method
+     * and return brokenFlag
+     *
+     * @param point (up, down, left, right) face of ball where it impacts brick
+     * @param dir direction of crack
+     * @return boolean True or False
+     */
     public boolean setImpact(Point2D point , int dir){
         //if Brick is broken, then return false
         if(super.isBroken())
@@ -63,9 +76,11 @@ public class SteelBrick extends Brick {
         return super.isBroken();
     }
 
-    /*//overriden abstract method
-    @Override
-    protected Shape makeBrickFace(Point pos, Dimension size) {return new Rectangle(pos,size);}//return newly constructed Rectangle*/
+    /**
+     * Overriden method from superclass, Brick
+     * getter for brickFace
+     * @return brickFace
+     */
     @Override
     public Shape getBrick() {return brickFace;}//return the brickFace of super class Brick
 

@@ -24,10 +24,12 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-//panel that contains the button and slider in the debugconsole (alt+shift+f1)
-public class DebugPanel extends JPanel {
 
-    //private static final Color DEF_BKG = Color.WHITE;
+
+/**
+ * DebugPanel is a panel that contains the 2 buttons and 2 sliders
+ */
+public class DebugPanel extends JPanel {
 
     //button skipLevel, resetBalls
     private JButton skipLevel;
@@ -37,12 +39,7 @@ public class DebugPanel extends JPanel {
     private JSlider ballXSpeed;
     private JSlider ballYSpeed;
 
-    //private Wall wall;
-
     public DebugPanel(Wall wall){
-
-        //this.wall = wall;
-
         //this initializes the DebugPanel components
         initialize();
 
@@ -64,37 +61,53 @@ public class DebugPanel extends JPanel {
 
     }
 
+    /**
+     * set layout of panel to fit 2 buttons, 2 columns
+     */
     private void initialize(){
-        //set background to white
-        //this.setBackground(DEF_BKG);
-        //set layout to fit 2 buttons, 2 columns
         this.setLayout(new GridLayout(2,2));
     }
 
+    /**
+     * Construct button with specified title and color
+     *
+     * @param title title of button
+     * @param e action events
+     * @return JButton
+     */
     private JButton makeButton(String title, ActionListener e){
-        //initialize the buttons with title
         JButton out = new JButton(title);
         out.addActionListener(e);
         out.setForeground(Color.WHITE);
         out.setBackground(new Color(255,153,153));
-        return  out;
+        return out;
     }
 
+    /**
+     * Construct slider with specified min, max value and color
+     *
+     * @param min minimum value of slider
+     * @param max maximum value of slider
+     * @param e change events
+     * @return JSlider
+     */
     private JSlider makeSlider(int min, int max, ChangeListener e){
         JSlider out = new JSlider(min,max);
-        //set sections with 1 space in the slider
-        out.setMajorTickSpacing(1);
-        //set the value of knob to the closest tick
-        out.setSnapToTicks(true);
-        //display the tick
-        out.setPaintTicks(true);
+        out.setMajorTickSpacing(1);//set sections with 1 space in the slider
+        out.setSnapToTicks(true);//set the value of knob to the closest tick
+        out.setPaintTicks(true);//display the tick
         out.addChangeListener(e);
         out.setForeground(Color.BLUE);
         out.setBackground(new Color(255,204,204));
         return out;
     }
 
-    //when debugpanel is opened, the knob of slider is automatically set to the value of the ball
+    /**
+     * when debugpanel is opened, the knob of slider is automatically set to the value of the ball
+     *
+     * @param x speedX
+     * @param y speedY
+     */
     public void setValues(int x,int y){
         ballXSpeed.setValue(x);
         ballYSpeed.setValue(y);

@@ -26,21 +26,27 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-//JDialog DebugConsole(alt+shift+f1) that holds the debugpanel component
+/**
+ * DebugConsole is a JDialog that holds the debugpanel component which can be activated with key (alt+shift+f1)
+ */
 public class DebugConsole extends JDialog implements WindowListener{
 
     private static final String TITLE = "Debug Console";
 
-    //the whole JFrame
-    private JFrame owner;
+    private JFrame owner;//GameFrame
     private DebugPanel debugPanel;
-    //the gameBoard but not JFrame (exclusive of the top bar)
-    private GameBoard gameBoard;
+    private GameBoard gameBoard;//GameBoard
     private Wall wall;
 
+    /**
+     * constructor of class DebugConsole which set values for wall, owner, gameBoard
+     * and also initialize DebugConsole
+     *
+     * @param owner GameFrame
+     * @param wall Wall
+     * @param gameBoard GameBoard
+     */
     public DebugConsole(JFrame owner,Wall wall,GameBoard gameBoard){
-
-        //set values to wall, owner, gameBoard
         this.wall = wall;
         this.owner = owner;
         this.gameBoard = gameBoard;
@@ -55,6 +61,9 @@ public class DebugConsole extends JDialog implements WindowListener{
         this.pack();
     }
 
+    /**
+     * initialize the DebugConsole as a JDialog
+     */
     private void initialize(){
         //so that debugConsole has to be closed to access the gameBoard(Brick Destroy) behind
         this.setModal(true);
@@ -66,25 +75,31 @@ public class DebugConsole extends JDialog implements WindowListener{
         this.setFocusable(true);
     }
 
-    //set the location of the debugConsole when opened (which is roughly the middle)
-    //owner is JFrame
-    //this is debugConsole
+    /**
+     * set the location of the debugConsole when opened (which is roughly the middle based on gameFrame)
+     */
     private void setLocation(){
         int x = ((owner.getWidth() - this.getWidth()) / 2) + owner.getX();
         int y = ((owner.getHeight() - this.getHeight()) / 2) + owner.getY();
         this.setLocation(x,y);
     }
 
+    /**
+     * when debugConsole is activated, it will be roughly in the middle relative to gameFrame
+     * the knob of slider is automatically set to the value of the ball
+     * @param windowEvent status of window
+     */
     @Override
     public void windowActivated(WindowEvent windowEvent) {
-        //so that debugConsole is in the middle when opened
         setLocation();
         Ball b = wall.getBall();
-        //the knob of slider is automatically set to the value of the ball
         debugPanel.setValues(b.getSpeedX(),b.getSpeedY());
     }
 
-    //when DebugConsole is closed, the whole gameBoard is reset again
+    /**
+     * when DebugConsole is closed, the whole gameBoard is reset again
+     * @param windowEvent status of window
+     */
     @Override
     public void windowClosing(WindowEvent windowEvent) {gameBoard.repaint();}
 

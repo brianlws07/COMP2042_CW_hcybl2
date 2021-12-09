@@ -4,13 +4,15 @@ import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 
+/**
+ * YellowBrick class which inherits from superclass, Brick
+ */
 public class YellowBrick extends Brick {
 
     //CONSTANTS:
-    //- Inner Color is Grey
-    //- Border Color is Cream White
-    //- Clay Strength is 2
-    //private static final String NAME = "Cement Brick";
+    //- Inner Color is Yellow
+    //- Border Color is Brownish Orange
+    //- Yellow Strength is 2
     private static final Color DEF_INNER = Color.yellow;
     private static final Color DEF_BORDER = new Color(255, 128, 0);
     private static final int CEMENT_STRENGTH = 3;
@@ -18,13 +20,49 @@ public class YellowBrick extends Brick {
     private Crack crack;
     private Shape brickFace;
 
-    //constructor of class CementBrick
+    /**
+     * constructor of class YellowBrick which set value for bricks' position, size, color, strength, brokenFlag in superclass, Brick
+     * and set value for cracks' depth, steps
+     *
+     * @param point position of individual brick
+     * @param size size of brick
+     */
     public YellowBrick(Point point, Dimension size){
         super(point,size,DEF_BORDER,DEF_INNER,CEMENT_STRENGTH);
         crack = new Crack(DEF_CRACK_DEPTH,DEF_STEPS); //DEF_CRACK_DEPTH = 1, DEF_STEPS = 35
         brickFace = super.getBrickFace();
     }
 
+    /**
+     * update brick by drawing crack on brickFace
+     */
+    private void updateBrick(){
+        //if Brick is not broken, draw crack on brick face
+        if(!super.isBroken()){
+            GeneralPath gp = crack.draw();
+            gp.append(super.getBrickFace(),false);
+            brickFace = gp;
+        }
+    }
+
+    /**
+     * Restore bricks' brokenFlag, strength, and remove crack on brickFace
+     */
+    public void repair(){
+        super.repair();
+        crack.reset();
+        brickFace = super.getBrickFace();
+    }
+
+    /**
+     * Overriden method from superclass, Brick
+     * if brick is broken return False, then call impact method
+     * if brick is still not broken, then draw crack on brickFace
+     *
+     * @param point (up, down, left, right) face of ball where it impacts brick
+     * @param dir direction of crack
+     * @return boolean True or False
+     */
     @Override
     public boolean setImpact(Point2D point, int dir) {
         //if Brick is broken, then return false
@@ -42,29 +80,11 @@ public class YellowBrick extends Brick {
         return true;
     }
 
-    //update brick with crack
-    private void updateBrick(){
-        //if Brick is not broken
-        if(!super.isBroken()){
-            //draw crack on brick face
-            GeneralPath gp = crack.draw();
-            gp.append(super.getBrickFace(),false);
-            brickFace = gp;
-        }
-    }
-
-    public void repair(){
-        //restore bricks's(broken, strength)
-        super.repair();
-        //remove crack path in bricks
-        crack.reset();
-        //set brickFace to superclass(Brick).brickFace
-        brickFace = super.getBrickFace();
-    }
-
-    /*//overriden abstract method
+    /**
+     * Overriden method from superclass, Brick
+     * getter for brickFace
+     * @return brickFace
+     */
     @Override
-    protected Shape makeBrickFace(Point pos, Dimension size) {return new Rectangle(pos,size);}//return newly constructed Rectangle*/
-    @Override
-    public Shape getBrick() {return brickFace;}//return the brickFace of super class Brick
+    public Shape getBrick() {return brickFace;}
 }

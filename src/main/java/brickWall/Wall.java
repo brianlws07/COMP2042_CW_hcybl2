@@ -30,24 +30,16 @@ import java.util.Random;
 
 public class Wall {
 
-    //CONSTANTS:
-    //private static final int LEVELS_COUNT = 4;// 4 levels
-    //private static final int CLAY = 1;
-    //private static final int STEEL = 2;
-    //private static final int CEMENT = 3;
-
-    //private Random rnd;
     private Rectangle area;
 
     private Brick[] bricks;
     private Ball ball;
     private Player player;
-    //private Crack crack;
 
     //levels is 2D array of Brick, level is type int
     private Brick[][] levels;
     private int level;
-    private Level levelcons;
+    private Level levelcons;//Level class constructor
 
     private final Point startPoint;
     private int brickCount;
@@ -62,15 +54,24 @@ public class Wall {
      */
 
     //constructor class Wall
+
+    /**
+     * construct for class Wall which initialize and set values for startPoint, levels, ballCount, area
+     * it also initializes a random speed for ball for every new level
+     *
+     * @param drawArea Rectangle GameFrame where game is rendered/drawn
+     * @param brickCount number of bricks in wall(30)
+     * @param lineCount lines of bricks in wall(3)
+     * @param brickDimensionRatio width-to-height ratio of a single brick
+     * @param ballPos position of ball(300, 430)
+     */
     public Wall(Rectangle drawArea, int brickCount, int lineCount, double brickDimensionRatio, Point ballPos){
 
         this.startPoint = new Point(ballPos);//startPoint on (300, 430)
         this.levelcons = new Level();
-
         levels = levelcons.makeLevels(drawArea,brickCount,lineCount,brickDimensionRatio);
         level = 0;
         ballCount = 3;
-
         rnd = new Random();
 
         //if (highscore.equals("")){
@@ -79,7 +80,6 @@ public class Wall {
 
         makeBall(ballPos);//construct a new RubberBall on (300, 430)
         player = new Player((Point) ballPos.clone(),150,10, drawArea);
-        //ballspeedReset();
         int speedX,speedY;
         do{speedX = rnd.nextInt(5) - 2;//speedX is rnd between 0, 1, 2
         }while(speedX == 0);
@@ -90,10 +90,14 @@ public class Wall {
         ball.setSpeed(speedX,speedY);
         ballLost = false;
 
-        area = drawArea;//it is the whole area of JFrame not inclusive of the top bar
+        area = drawArea;//whole area of GameFrame
     }
 
-    private void makeBall(Point2D ballPos){ball = new RubberBall(ballPos);}//construct a new RubberBall
+    /**
+     * Construct a new rubber ball
+     * @param ballPos position of ball (300, 430)
+     */
+    private void makeBall(Point2D ballPos){ball = new RubberBall(ballPos);}
 
     /*
     public String getHighscore(){
@@ -153,6 +157,13 @@ public class Wall {
 
      */
 
+    /**
+     * it checks all sorts of impacts, and carry out subsequent action
+     * checks if player green bar is impacted by ball
+     * check if brick are impacted until broken
+     * checks if ball impacted the border of gameFrame
+     * check if ball is lost by going out of bounds
+     */
     public void findImpacts(){
         //if ball impacts player bar, rebound the ball upwards
         if(player.impact(ball)){
@@ -181,9 +192,12 @@ public class Wall {
         }
     }
 
-    //for switch case condition, it finds the direction of the brick where the ball impacts it
-    //then it rebounds the ball
-    //then it returns True if the brick is broken, else it returns False if brick is not broken
+    /**
+     * for switch case condition, it finds the direction of the brick where the ball impacts it
+     * then it rebounds the ball in reverse direction
+     *
+     * @return False if the brick is broken, then call impact method and return brokenFlag
+     */
     private boolean impactWall(){
         for(Brick b : bricks){
             switch(b.findImpact(ball)) {
@@ -207,16 +221,19 @@ public class Wall {
         return false;
     }
 
-    //returns True if the ball goes beyond the left or right edge of the Game Frame
+    /**
+     * check if ball impacts border of gameFrame
+     * @return True if the ball goes beyond the left or right edge of the gameFrame
+     */
     private boolean impactBorder(){
         Point2D p = ball.getPosition();
         return ((p.getX() < area.getX()) ||(p.getX() > (area.getX() + area.getWidth())));
     }
 
-
-    //it resets the position of player bar and ball
-    //it then resets the direction of ball movement
-    //it also resets ballLost to false
+    /**
+     * it resets the position of player bar and ball
+     * it then resets the direction of ball movement, and ballLost to false
+     */
     public void ballReset(){
         player.moveTo(startPoint);
         ball.moveTo(startPoint);
@@ -231,18 +248,10 @@ public class Wall {
         ballLost = false;
     }
 
-    /*
-    public void ballspeedReset(){
-        int speedX = 2,speedY = -3;
-        ball.setSpeed(speedX,speedY);
-        ballLost = false;
-    }
-
+    /**
+     * it restores all the brick
+     * it also reset the ballCount to 3 again
      */
-
-
-    //it restores all the brick
-    //it also reset the ballCount to 3 again
     public void wallReset(){
         for(Brick b : bricks)
             b.repair();
@@ -250,40 +259,89 @@ public class Wall {
         ballCount = 3;
     }
 
-    //it goes to the next level, and it also restores the brickCount back to 31
+    /**
+     * it goes to the next level, and it also restores the brickCount back to 31
+     */
     public void nextLevel(){
         bricks = levels[level++];
         this.brickCount = bricks.length;
     }
 
-
-    public boolean hasLevel(){return level < levels.length;} //returns True if there is level remaining (4 levels in total)
-
-    public void setBallXSpeed(int s){ball.setXSpeed(s);}
-
-    public void setBallYSpeed(int s){ball.setYSpeed(s);}
-
-    public void resetBallCount(){ballCount = 3;}
-
-    public void move(){//player and ball move
+    /**
+     * player and ball move
+     */
+    public void move(){
         player.move();
         ball.move();
     }
 
+    /**
+     * returns True if there is level remaining (4 levels in total)
+     * @return boolean True or False
+     */
+    public boolean hasLevel(){return level < levels.length;}
+
+    /**
+     * setter for ball's speed X
+     * @param s integer value for speedX
+     */
+    public void setBallXSpeed(int s){ball.setXSpeed(s);}
+
+    /**
+     * setter for ball's speed Y
+     * @param s integer value for speedY
+     */
+    public void setBallYSpeed(int s){ball.setYSpeed(s);}
+
+    /**
+     * reset number of balls to 3
+     */
+    public void resetBallCount(){ballCount = 3;}
+
+    /**
+     * @return true if number of balls is 0
+     */
     public boolean ballEnd(){return ballCount == 0;}
 
+    /**
+     * @return true if number of bricks is 0
+     */
     public boolean isDone(){return brickCount == 0;}
 
+    /**
+     * getter for brickCount
+     * @return number of bricks
+     */
     public int getBrickCount(){return brickCount;}
 
+    /**
+     * getter for ballCount
+     * @return number of balls
+     */
     public int getBallCount(){return ballCount;}
 
+    /**
+     * getter for ballLost
+     * @return boolean value of ballLost
+     */
     public boolean isBallLost(){return ballLost;}
 
+    /**
+     * getter for Bricks
+     * @return array of bricks
+     */
     public Brick[] getBricks() {return bricks;}
 
+    /**
+     * getter for ball
+     * @return ball
+     */
     public Ball getBall() {return ball;}
 
+    /**
+     * getter for player
+     * @return player green bar
+     */
     public Player getPlayer() {return player;}
 
     //public int getScore() {return score;}

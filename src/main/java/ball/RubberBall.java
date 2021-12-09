@@ -18,11 +18,13 @@
 package ball;
 
 import ball.Ball;
-
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
+/**
+ * RubberBall class which inherits from superclass Ball
+ */
 public class RubberBall extends Ball {
 
     //CONSTANTS:
@@ -33,14 +35,24 @@ public class RubberBall extends Ball {
     private static final Color DEF_INNER_COLOR = new Color(255, 219, 88);
     private static final Color DEF_BORDER_COLOR = DEF_INNER_COLOR.darker().darker();
 
-    //set center coordinate, radius, color in superclass
+    /**
+     * Constructor of RubberBall class which set values for coordinates, radius, color in superclass, Ball
+     *
+     * @param center center coordinate of ball
+     */
     public RubberBall(Point2D center){
         super(center,DEF_RADIUS,DEF_RADIUS,DEF_INNER_COLOR,DEF_BORDER_COLOR);
     }
 
-
-    //Overriden method makeBall
-    //construct an Ellipse2D shape ball
+    /**
+     * Overriden method makeBall from superclass, Ball
+     * constructs an Ellipse2D shape ball
+     *
+     * @param center center coordinate of ball
+     * @param radiusA horizontal radius of ball
+     * @param radiusB vertical radius of ball
+     * @return Ellipse2D shape ball
+     */
     @Override
     protected Shape makeBall(Point2D center, int radiusA, int radiusB) {
 

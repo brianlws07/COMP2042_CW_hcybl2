@@ -21,8 +21,9 @@ import ball.Ball;
 
 import java.awt.*;
 
-
-//Player class represents the green bar below that we are controlling
+/**
+ * Player class which represents the green bar that player are supposed to control
+ */
 public class Player {
 
     //CONSTANTS:
@@ -33,17 +34,21 @@ public class Player {
     public static final Color INNER_COLOR = Color.GREEN;
     private static final int DEF_MOVE_AMOUNT = 5;
 
-    //player bar is rectangle shape
-    private Rectangle playerFace;
-    //point coordinate of ball
-    private Point ballPoint;
+    private Rectangle playerFace;//player bar is rectangle shape
+    private Point ballPoint;//point coordinate of ball
     private int moveAmount;
     private int min;
     private int max;
 
-    //ballPoint is ball position(300,430)
-    //container is gameFrame
-    //construct a rectangle player bar
+    /**
+     * Constructor of Player class
+     * initialize and set value for ballpoint, moveAmount, playerFace, min, max
+     *
+     * @param ballPoint Position of the ball (which is always the startPoint (300, 430))
+     * @param width Width of player green bar
+     * @param height Height of player green bar
+     * @param container Rectangle GameFrame where game is rendered/drawn
+     */
     public Player(Point ballPoint,int width,int height,Rectangle container) {
         this.ballPoint = ballPoint;
         stop();
@@ -53,13 +58,23 @@ public class Player {
         max = min + container.width - width;
     }
 
+    /**
+     * Constructs a Rectangle player green bar at default location p(which is based on ballPoint),
+     * so that ball is always at the middle of player green bar when program starts
+     *
+     * @param width Width of player green bar
+     * @param height Height of player green bar
+     * @return Rectangle shaped player green bar
+     */
     //constructing Rectangle player bar at default location p
     private Rectangle makeRectangle(int width,int height){
-        Point p = new Point((int)(ballPoint.getX() - (width / 2)),(int)ballPoint.getY());//so that ball is in middle of player bar when program starts
+        Point p = new Point((int)(ballPoint.getX() - (width / 2)),(int)ballPoint.getY());
         return new Rectangle(p,new Dimension(width,height));
     }
 
-    //move player bar
+    /**
+     * move player green bar
+     */
     public void move(){
         //check if ball is within range of gameFrame
         //if yes then move the ball and move player bar
@@ -70,21 +85,41 @@ public class Player {
         playerFace.setLocation(ballPoint.x - (int)playerFace.getWidth()/2,ballPoint.y);
     }
 
-    //move player bar based on point P
+    /**
+     * move player green bar to specified point P
+     * @param p specified location Point p
+     */
     public void moveTo(Point p){
         //move ball to point P, then move the player bar
         ballPoint.setLocation(p);
         playerFace.setLocation(ballPoint.x - (int)playerFace.getWidth()/2,ballPoint.y);
     }
 
-    //returns True if ball impacted player bar (down face of ball touches player bar)
+    /**
+     *returns True if ball impacted player bar (down face of ball touches player bar)
+     * @param b ball, b
+     * @return boolean True or False
+     */
     public boolean impact(Ball b){return playerFace.contains(b.getPosition()) && playerFace.contains(b.getDown()) ;}
 
-    public void moveLeft(){moveAmount = -DEF_MOVE_AMOUNT;}//move player bar to left
-    public void movRight(){moveAmount = DEF_MOVE_AMOUNT;}//move player bar to left
+    /**
+     * move player green bar towards left
+     */
+    public void moveLeft(){moveAmount = -DEF_MOVE_AMOUNT;}
+
+    /**
+     * move player green bar towards right
+     */
+    public void movRight(){moveAmount = DEF_MOVE_AMOUNT;}
+
+    /**
+     * stop player green bar
+     */
     public void stop(){moveAmount = 0;}//stop player bar
 
-    public Shape getPlayerFace(){
-        return  playerFace;
-    }
+    /**
+     * getter for player green bar
+     * @return Rectangle playerFace
+     */
+    public Shape getPlayerFace(){return playerFace;}
 }

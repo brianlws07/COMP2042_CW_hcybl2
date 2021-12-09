@@ -4,7 +4,9 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.RectangularShape;
 
-//abstract class Ball which is to be inherited by Rubber Ball
+/**
+ * abstract class Ball which is to be inherited by Rubber Ball
+ */
 abstract public class Ball {
 
     //outline of ballface
@@ -25,11 +27,16 @@ abstract public class Ball {
     private int speedX;
     private int speedY;
 
-    //Constructor of the class Ball
-    //initialize and set value for center, up, down, left, right, border, inner, speedX, speedY
-    //construct the Ellipse2D of ballFace
-    //radius A is the horizontal radius
-    //radius B is the vertical radius
+    /**
+     * Constructor of ball class
+     * initialize and set value for ball's coordinate, speed
+     *
+     * @param center center coordinate of ball
+     * @param radiusA horizontal radius of the ball
+     * @param radiusB vertical radius of the ball
+     * @param inner inner color of ball(yellow)
+     * @param border border color of ball(black)
+     */
     public Ball(Point2D center,int radiusA,int radiusB,Color inner,Color border){
         this.center = center;
 
@@ -48,20 +55,24 @@ abstract public class Ball {
         speedY = 0;
     }
 
-    //makeBall(abstract method) to be implemented by the subclass (RubberBall)
+    /**
+     *abstract method to be implemented by the subclass, RubberBall which construct an Ellipse2D of ballFace
+     *
+     * @param center center coordinate of ball
+     * @param radiusA horizontal radius of ball
+     * @param radiusB vertical radius of ball
+     * @return Ellipse2D shape ball
+     */
     protected abstract Shape makeBall(Point2D center,int radiusA,int radiusB);
 
-    //move the ball to new location based on speedX and speedY
+    /**
+     *move the ball to new location based on speedX and speedY
+     */
     public void move(){
         //Typecast ballFace to Rectangular frame
         //reset center coordinate of ball with speedX and speedY
         RectangularShape tmp = (RectangularShape) ballFace;
         center.setLocation((center.getX() + speedX),(center.getY() + speedY));
-
-        /*double w = tmp.getWidth();
-        double h = tmp.getHeight();
-        tmp.setFrame((center.getX() -(w / 2)),(center.getY() - (h / 2)),w,h);
-        setPoints(w,h);*/
         moveFrame(tmp, center);
 
         //first we surround the circle with a rectangular frame
@@ -70,29 +81,37 @@ abstract public class Ball {
         ballFace = tmp;
     }
 
-    //move the ballFace to point P
+    /**
+     * move the ball to specified point P(which is startpoint as stated in Wall class)
+     *
+     * @param p point p of type Point
+     */
     public void moveTo(Point p){
         RectangularShape tmp = (RectangularShape) ballFace;
         center.setLocation(p);
-        /*double w = tmp.getWidth();
-        double h = tmp.getHeight();
-        tmp.setFrame((center.getX() -(w / 2)),(center.getY() - (h / 2)),w,h);
-        setPoints(w,h);*/
         moveFrame(tmp, center);
         ballFace = tmp;
     }
 
-    //w is width, h is height of rectangular frame
-    //move rectangular frame to new location
-    //reset up, down, left, right coordinate of ball
+    /**
+     * move rectangle frame to new location and reset 4 coordinate of ball
+     *
+     * @param tmp temporary Rectangular frame which encapsulates the ball shape
+     * @param center center coordinate of ball
+     */
     private void moveFrame(RectangularShape tmp, Point2D center){
-        double w = tmp.getWidth();
-        double h = tmp.getHeight();
+        double w = tmp.getWidth();//w is width
+        double h = tmp.getHeight();//h is height of rectangular frame
         tmp.setFrame((center.getX() -(w / 2)),(center.getY() - (h / 2)),w,h);
         setPoints(w,h);
     }
 
-    //reset up, down, left, right coordinate of ball based on width and height of rectangular frame
+    /**
+     * reset up, down, left, right coordinate of ball based on width and height of rectangular frame
+     *
+     * @param width width of rectangular frame
+     * @param height height of rectangular frame
+     */
     private void setPoints(double width,double height){
         up.setLocation(center.getX(),center.getY()-(height / 2));
         down.setLocation(center.getX(),center.getY()+(height / 2));
@@ -100,44 +119,96 @@ abstract public class Ball {
         right.setLocation(center.getX()+(width / 2),center.getY());
     }
 
+    /**
+     * set speedX and speedY of ball
+     *
+     * @param x speedX (horizontal speed)
+     * @param y speedY (vertical speed)
+     */
     public void setSpeed(int x,int y){
         speedX = x;
         speedY = y;
     }
 
+    /**
+     * set speedX for ball
+     * @param s speed X
+     */
     public void setXSpeed(int s){speedX = s;}
 
+    /**
+     * set speedY for ball
+     * @param s speed Y
+     */
     public void setYSpeed(int s){speedY = s;}
 
-    public void reverseX(){speedX *= -1;}//set ball speed to left
-
-    public void reverseY(){speedY *= -1;}//set ball speed to up
-
-    public Color getBorderColor(){return border;}
-
-    public Color getInnerColor(){return inner;}
-
-    public Point2D getPosition(){return center;}
-
-    public Shape getBallFace(){return ballFace;}
-
+    /**
+     * getter of speedX of ball
+     * @return speedX
+     */
     public int getSpeedX(){return speedX;}
 
+    /**
+     *getter of speedY of ball
+     * @return
+     */
     public int getSpeedY(){return speedY;}
 
+    /**
+     * reverse speedX ball by -1 (so ball goes left)
+     */
+    public void reverseX(){speedX *= -1;}
+
+    /**
+     * reverse speedY ball by -1 (so ball goes up)
+     */
+    public void reverseY(){speedY *= -1;}
+
+    /**
+     * getter for ball's border color
+     * @return border color of ball (black)
+     */
+    public Color getBorderColor(){return border;}
+
+    /**
+     * getter for ball's inner color
+     * @return inner color of ball (yellow)
+     */
+    public Color getInnerColor(){return inner;}
+
+    /**
+     * getter for ball's center position
+     * @return center coordinate of ball
+     */
+    public Point2D getPosition(){return center;}
+
+    /**
+     * getter for ballFace
+     * @return outline shape of ball
+     */
+    public Shape getBallFace(){return ballFace;}
+
+    /**
+     * getter for ball's up coordinate
+     * @return up point of ball
+     */
     public Point2D getUp() {return up;}
 
-    //public void setUp(Point2D up) {this.up = up;}
-
+    /**
+     * getter for ball's down coordinate
+     * @return down point of ball
+     */
     public Point2D getDown() {return down;}
 
-    //public void setDown(Point2D down) {this.down = down;}
-
+    /**
+     * getter for ball's left coordinate
+     * @return left point of ball
+     */
     public Point2D getLeft() {return left;}
 
-    //public void setLeft(Point2D left) {this.left = left;}
-
+    /**
+     * getter for ball's right coordinate
+     * @return right point of ball
+     */
     public Point2D getRight() {return right;}
-
-    //public void setRight(Point2D right) {this.right = right;}
 }
