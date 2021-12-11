@@ -333,7 +333,7 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
     }
 
     /**
-     * method is only activated when buttons are clicked(pressed & released)
+     * method is only activated when buttons are clicked(pressed and released)
      * if startButton is clicked then gameBoard is initialized
      * if menuButton is clicked then quit program, and "Goodbye user" is printed
      * if infoButton is clicked, infoFrame will pop up
