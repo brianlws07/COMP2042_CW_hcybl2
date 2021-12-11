@@ -43,7 +43,9 @@ public class Wall {
 
     private final Point startPoint;
     private int brickCount;
+
     private int ballCount; //3
+
     private boolean ballLost;
 
     private Random rnd;
@@ -321,10 +323,22 @@ public class Wall {
     public int getBallCount(){return ballCount;}
 
     /**
+     * setter for ballCount
+     * @param ballCount number of balls
+     */
+    public void setBallCount(int ballCount) {this.ballCount = ballCount;}
+
+    /**
      * getter for ballLost
      * @return boolean value of ballLost
      */
     public boolean isBallLost(){return ballLost;}
+
+    /**
+     * setter for ballLost
+     * @param ballLost boolean value of ballLost
+     */
+    public void setBallLost(boolean ballLost) {this.ballLost = ballLost;}
 
     /**
      * getter for Bricks

@@ -21,7 +21,6 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Random;
 
-
 public class SteelBrick extends Brick {
 
     //CONSTANTS:
@@ -83,5 +82,11 @@ public class SteelBrick extends Brick {
      */
     @Override
     public Shape getBrick() {return brickFace;}//return the brickFace of super class Brick
+
+    /**
+     * getter for rnd
+     * @return Random rnd
+     */
+    public Random getRnd() {return rnd;}
 
 }

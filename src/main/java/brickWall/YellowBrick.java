@@ -15,7 +15,7 @@ public class YellowBrick extends Brick {
     //- Yellow Strength is 2
     private static final Color DEF_INNER = Color.yellow;
     private static final Color DEF_BORDER = new Color(255, 128, 0);
-    private static final int CEMENT_STRENGTH = 3;
+    private static final int YELLOW_STRENGTH = 3;
 
     private Crack crack;
     private Shape brickFace;
@@ -28,7 +28,7 @@ public class YellowBrick extends Brick {
      * @param size size of brick
      */
     public YellowBrick(Point point, Dimension size){
-        super(point,size,DEF_BORDER,DEF_INNER,CEMENT_STRENGTH);
+        super(point,size,DEF_BORDER,DEF_INNER,YELLOW_STRENGTH);
         crack = new Crack(DEF_CRACK_DEPTH,DEF_STEPS); //DEF_CRACK_DEPTH = 1, DEF_STEPS = 35
         brickFace = super.getBrickFace();
     }

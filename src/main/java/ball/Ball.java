@@ -150,7 +150,7 @@ abstract public class Ball {
 
     /**
      *getter of speedY of ball
-     * @return
+     * @return speedY
      */
     public int getSpeedY(){return speedY;}
 

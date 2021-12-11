@@ -67,7 +67,7 @@ public class Player {
      * @return Rectangle shaped player green bar
      */
     //constructing Rectangle player bar at default location p
-    private Rectangle makeRectangle(int width,int height){
+    public Rectangle makeRectangle(int width,int height){
         Point p = new Point((int)(ballPoint.getX() - (width / 2)),(int)ballPoint.getY());
         return new Rectangle(p,new Dimension(width,height));
     }
