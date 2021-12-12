@@ -160,7 +160,9 @@ public class Wall {
         }
     }
 
-
+    public void resetScore(){
+        this.score = 0;
+    }
 
     /**
      * it checks all sorts of impacts, and carry out subsequent action
@@ -361,5 +363,9 @@ public class Wall {
      */
     public Player getPlayer() {return player;}
 
+    /**
+     * getter for score
+     * @return int score
+     */
     public int getScore() {return score;}
 }
