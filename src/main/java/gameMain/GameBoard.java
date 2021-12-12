@@ -203,19 +203,6 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         Toolkit.getDefaultToolkit().sync();
     }
 
-    /*
-    private void clear(Graphics2D g2d){
-        //store g2d color in tmp
-        Color tmp = g2d.getColor();
-        //fill up the background color of GameBoard with white
-        g2d.setColor(BG_COLOR);
-        g2d.fillRect(0,0,getWidth(),getHeight());
-        //restore the g2d color
-        g2d.setColor(tmp);
-    }
-
-     */
-
     /**
      * draw bricks and fill it up with inner and border color
      * @param brick bricks

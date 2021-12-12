@@ -160,6 +160,9 @@ public class Wall {
         }
     }
 
+    /**
+     * reset score everytime level is reset or ball lost
+     */
     public void resetScore(){
         this.score = 0;
     }
