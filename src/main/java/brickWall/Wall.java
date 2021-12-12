@@ -50,10 +50,9 @@ public class Wall {
 
     private Random rnd;
 
-    /*
+
     private int score = 0;
     private String highscore = "";
-     */
 
     //constructor class Wall
 
@@ -76,9 +75,9 @@ public class Wall {
         ballCount = 3;
         rnd = new Random();
 
-        //if (highscore.equals("")){
-        //    highscore = this.getHighscore();
-        //}
+        if (highscore.equals("")){
+            highscore = this.getHighscore();
+        }
 
         makeBall(ballPos);//construct a new RubberBall on (300, 430)
         player = new Player((Point) ballPos.clone(),150,10, drawArea);
@@ -101,13 +100,16 @@ public class Wall {
      */
     private void makeBall(Point2D ballPos){ball = new RubberBall(ballPos);}
 
-    /*
+    /**
+     * Read a line from highscore.txt and insert into variable highscore
+     * @return String highscore
+     */
     public String getHighscore(){
         //format: Brandon:100
-        FileReader readFile = null;
+        FileReader readFile;
         BufferedReader reader = null;
         try {
-            readFile = new FileReader("highscore.dat");
+            readFile = new FileReader("highscore.txt");
             reader = new BufferedReader(readFile);
             return reader.readLine();
         } catch (Exception e) {
@@ -124,17 +126,16 @@ public class Wall {
 
     }
 
+    /**
+     * to check whether player's score is higher than current highscore
+     */
     public void checkScore(){
-
-        if (highscore.equals(""))
-            return;
-
         //format: Brandon/:/100
         if (score > Integer.parseInt(highscore.split(":")[1])){
             String name = JOptionPane.showInputDialog("You set a new highscore!!! Enter your name");
             highscore = name + ":" + score;
 
-            File scoreFile = new File("highscore.dat");
+            File scoreFile = new File("highscore.txt");
 
             if(!scoreFile.exists()){
                 try {
@@ -145,19 +146,21 @@ public class Wall {
             }
 
 
-            //FileWriter writeFile = null;
-            //BufferedWriter writer = null;
+            FileWriter writeFile;
+            BufferedWriter writer;
             try {
-                FileWriter writeFile = new FileWriter(scoreFile);
-                BufferedWriter writer = new BufferedWriter(writeFile);
-                writer.write(this.getHighscore());
+                writeFile = new FileWriter(scoreFile);
+                writer = new BufferedWriter(writeFile);
+                System.out.println(this.highscore);
+                writer.write(this.highscore);
+                writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-     */
+
 
     /**
      * it checks all sorts of impacts, and carry out subsequent action
@@ -177,7 +180,7 @@ public class Wall {
             * because for every brick program checks for horizontal and vertical impacts
             */
             brickCount--;
-            //score++;
+            score++;
         }
         //if ball reaches the left and right edge of the GameFrame, then rebound the ball in the reverse direction from the direction it came
         else if(impactBorder()) {
@@ -358,7 +361,5 @@ public class Wall {
      */
     public Player getPlayer() {return player;}
 
-    //public int getScore() {return score;}
-
-    //public void setScore(int score) {this.score = score;}
+    public int getScore() {return score;}
 }

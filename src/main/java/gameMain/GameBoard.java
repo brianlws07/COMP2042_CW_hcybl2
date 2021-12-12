@@ -52,8 +52,8 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     private Wall wall;
 
     private String message;
-    //private String scoremessage;
-    //private String highscoremessage;
+    private String scoremessage;
+    private String highscoremessage;
 
     private boolean showPauseMenu;
 
@@ -85,6 +85,8 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         //initialize the GameBoard JComponent
         this.initialize();
         message = "";
+        scoremessage = "";
+        highscoremessage = "";
         //Rectangle parameter was passed as drawArea for the walls
         wall = new Wall(new Rectangle(0,0,DEF_WIDTH,DEF_HEIGHT),30,3,6/2,new Point(300,430));
         //construct the debugConsole
@@ -97,10 +99,10 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
             wall.move();
             //walls are impacted
             wall.findImpacts();
-            //display no. bricks and no.balls on screen
+            //display no. bricks, no.balls, score, highscore on screen
             message = String.format("Bricks: %d Balls %d",wall.getBrickCount(),wall.getBallCount());
-            //scoremessage = String.format("Score: %d: ",wall.getScore());
-            //highscoremessage = String.format("HighScore %s",wall.getHighscore());
+            scoremessage = String.format("Score: %d",wall.getScore());
+            highscoremessage = String.format("HighScore: %s",wall.getHighscore());
             //if a ball is lost,
             //then check if all ball are lost, if yes then restore the walls and output message "Game over"
             //then reset ball and player bar back to original position
@@ -109,7 +111,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                 if(wall.ballEnd()){
                     wall.wallReset();
                     message = "Game over";
-                    //wall.checkScore();
+                    wall.checkScore();
                 }
                 wall.ballReset();
                 gameTimer.stop();
@@ -134,7 +136,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                 else{
                     message = "ALL WALLS DESTROYED";
                     gameTimer.stop();
-                    //wall.checkScore();
+                    wall.checkScore();
                 }
             }
             //repaint the GameBoard after that
@@ -181,9 +183,9 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         g2d.setColor(Color.GREEN);
         g2d.drawString(message,250,225);
 
-        //draw high score
-        //g2d.drawString(scoremessage,250,250);
-        //g2d.drawString(highscoremessage,250,275);
+        //draw high score and score
+        g2d.drawString(scoremessage,250,250);
+        g2d.drawString(highscoremessage,250,275);
 
         drawBall(wall.getBall(),g2d);//draw the ball on screen
         //for all the bricks that are not broken, draw the bricks on screen
