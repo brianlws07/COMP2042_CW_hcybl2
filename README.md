@@ -51,7 +51,7 @@ DebugConsole that pops up by pressing keys (alt+shift+f1)
 * removed white background color since DebugPanel is covered by JButtons and JSliders
 
 
-## Addition:
+## Extensions:
 * Changed the color of buttons and sliders in DebugConsole
 * Added a new background image and changed the color of border in HomeMenu
 * Added a new infoButton in HomeMenu, and also created a new InfoFrame that contains infoguides and background image
@@ -60,7 +60,10 @@ DebugConsole that pops up by pressing keys (alt+shift+f1)
 * Created a highscore pop up when ball is lost or finished game
 * Separated classes into their respective packages with specific names
 
-
+## Additions:
+- Maven build file is generated at target folder
+- Javadocs are generated in Javadocs folder
+- Junit test are generated in test folder
 
 
 
