@@ -204,7 +204,7 @@ public class Level {
      * @param point location where brick is constructed
      * @param size Size of a single brick
      * @param type type of bricks
-     * @return
+     * @return different type of bricks
      */
     private Brick makeBrick(Point point, Dimension size, int type){
         Brick out;
