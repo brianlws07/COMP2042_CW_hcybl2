@@ -12,7 +12,7 @@ public class YellowBrick extends Brick {
     //CONSTANTS:
     //- Inner Color is Yellow
     //- Border Color is Brownish Orange
-    //- Yellow Strength is 2
+    //- Yellow Strength is 3
     private static final Color DEF_INNER = Color.yellow;
     private static final Color DEF_BORDER = new Color(255, 128, 0);
     private static final int YELLOW_STRENGTH = 3;
